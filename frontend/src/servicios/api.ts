@@ -101,7 +101,7 @@ export async function obtenerPostulacion(id: number, token: string): Promise<Pos
     return respuesta.json()
 }
 
-export async function obtenerHistorial(id: number, token: string): Promise<HistorialSalida> {
+export async function obtenerHistorial(id: number, token: string): Promise<HistorialSalida[]> {
     const respuesta = await fetch(`${apiUrl}/postulaciones/${id}/historial`, {
         method: "GET",
         headers: cabecera(token),
