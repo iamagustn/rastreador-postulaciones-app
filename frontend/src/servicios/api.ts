@@ -1,4 +1,4 @@
-import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, TokenSalida, PostulacionEntrada, MercadoSalida, ModalidadSalida, EstadoSalida } from "../tipos/api";
+import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, TokenSalida, PostulacionEntrada, MercadoSalida, ModalidadSalida, EstadoSalida, HistorialSalida } from "../tipos/api";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
@@ -94,6 +94,15 @@ export async function crearPostulacion(token: string, postulacion : PostulacionE
 
 export async function obtenerPostulacion(id: number, token: string): Promise<PostulacionSalida> {
     const respuesta = await fetch(`${apiUrl}/postulaciones/${id}`, {
+        method: "GET",
+        headers: cabecera(token),
+    })
+    await verificarRespuesta(respuesta)
+    return respuesta.json()
+}
+
+export async function obtenerHistorial(id: number, token: string): Promise<HistorialSalida> {
+    const respuesta = await fetch(`${apiUrl}/postulaciones/${id}/historial`, {
         method: "GET",
         headers: cabecera(token),
     })
