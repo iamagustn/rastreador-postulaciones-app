@@ -91,3 +91,12 @@ export async function crearPostulacion(token: string, postulacion : PostulacionE
     await verificarRespuesta(respuesta)
     return respuesta.json()
 }
+
+export async function obtenerPostulacion(id: number, token: string): Promise<PostulacionSalida> {
+    const respuesta = await fetch(`${apiUrl}/postulaciones/${id}`, {
+        method: "GET",
+        headers: cabecera(token),
+    })
+    await verificarRespuesta(respuesta)
+    return respuesta.json()
+}
