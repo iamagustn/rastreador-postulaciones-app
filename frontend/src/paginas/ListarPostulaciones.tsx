@@ -38,7 +38,7 @@ function ListarPostulaciones({ contador }: Props){
                 setCargando(false)
             }
         } manejarPostulaciones()
-    }, [token, contador])
+    }, [tokenValido, contador])
 
     return (
         <div>
