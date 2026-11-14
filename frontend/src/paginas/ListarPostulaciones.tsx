@@ -3,6 +3,7 @@ import type { PostulacionSalida } from "../tipos/api";
 import { listarPostulaciones } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
+import { Link } from "react-router-dom";
 
 interface Props{
     contador: number;
@@ -43,7 +44,11 @@ function ListarPostulaciones({ contador }: Props){
         <div>
             {cargando && <p>Cargando postulaciones...</p>}
             {error && <p>Ocurrió un error: { error }</p>}
-            {postulaciones.length > 0 ? postulaciones.map(postulacion => <TarjetaPostulacion key={postulacion.id} postulacion={postulacion}/>) : <p>No tienes postulaciones registradas</p>}
+            {postulaciones.length > 0 ? postulaciones.map(postulacion => 
+                <Link key={postulacion.id} to={`/postulaciones/${postulacion.id}`}>
+                    <TarjetaPostulacion postulacion={postulacion}/>
+                </Link>
+            ) : <p>No tienes postulaciones registradas</p>}
         </div>
     )
 }
