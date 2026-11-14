@@ -14,13 +14,11 @@ function DetallePostulacion(){
     const [cargando, setCargando] = useState(false)
 
     const { token } = useAuth()
-    if (!token) return null 
-    const tokenValido: string = token
+     
+    const tokenValido: string = token ?? ""
 
     const idValido = Number(id)
-    if (!id || Number.isNaN(idValido)){
-        return
-    }
+    
 
     useEffect(() => {
         async function manejarDatos(){
@@ -44,6 +42,10 @@ function DetallePostulacion(){
         } manejarDatos()
     }, [idValido, tokenValido])
 
+    if (!token) return null
+    if (!id || Number.isNaN(idValido)){
+        return <p>El ID es invalido</p>
+    }
     return (
         <div>
             {cargando && <p>Cargando postulaciones...</p>}
@@ -52,7 +54,7 @@ function DetallePostulacion(){
             
             {historial.map(entrada => (
                 <p key={entrada.id}>
-                    {entrada.estado.nombre_estado} — {new Date(entrada.fecha).toLocaleDateString('es-MX', {
+                    {entrada.estado.nombre_estado} — {new Date(entrada.fecha).toLocaleString('es-MX', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'

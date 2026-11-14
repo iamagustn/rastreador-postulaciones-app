@@ -6,6 +6,7 @@ import NuevaPostulacion from "./paginas/NuevaPostulacion"
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import RutaProtegida from "./componentes/RutaProtegida"
 import { useAuth } from "./contextos/AuthContexto"
+import DetallePostulacion from "./paginas/DetallePostulacion"
 
 function App() {
 
@@ -40,6 +41,12 @@ function App() {
       <Route path="/postulaciones/nueva" element={
         <RutaProtegida>
           <NuevaPostulacion subirContador={subirContador}/>
+        </RutaProtegida>
+      }/>
+
+      <Route path="/postulaciones/:id" element={
+        <RutaProtegida>
+          <DetallePostulacion />
         </RutaProtegida>
       }/>
 
