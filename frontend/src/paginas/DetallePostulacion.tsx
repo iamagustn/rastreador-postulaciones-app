@@ -61,7 +61,9 @@ function DetallePostulacion(){
                     {entrada.estado.nombre_estado} — {new Date(entrada.fecha).toLocaleString('es-MX', {
                         year: 'numeric',
                         month: 'long',
-                        day: 'numeric'
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
                     })}
                 </p>
             ))}
