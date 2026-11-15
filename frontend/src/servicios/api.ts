@@ -114,7 +114,7 @@ export async function cambiarEstado(id: number, estado: string, token: string): 
     const respuesta = await fetch(`${apiUrl}/postulaciones/${id}/estado`, {
         method: "PATCH",
         headers: {...cabecera(token), "Content-Type": "application/json"},
-        body: JSON.stringify(estado)
+        body: JSON.stringify({ estado })
     });
     await verificarRespuesta(respuesta)
     return respuesta.json()
