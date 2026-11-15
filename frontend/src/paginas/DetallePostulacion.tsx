@@ -2,18 +2,23 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from "../tipos/api";
 import { useAuth } from "../contextos/AuthContexto";
-import { listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
+import { cambiarEstado, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 
 function DetallePostulacion(){
 
     const { id } = useParams();
+
     const [postulacion, setPostulacion] = useState<PostulacionSalida>()
     const [historial, setHistorial] = useState<HistorialSalida[]>([])
+
     const [error, setError] = useState<string | null>(null)
     const [cargando, setCargando] = useState(false)
+    const [exito, setExito] = useState("")
+    const [cargandoCambio, setCargangoCambio] = useState(false)
+
     const [estados, setEstados] = useState<EstadoSalida[]>([])
-    const [estadoId, setEstadoId] = useState("")
+    const [estado, setEstado] = useState("")
 
     const { token } = useAuth()
      
@@ -21,6 +26,24 @@ function DetallePostulacion(){
 
     const idValido = Number(id)
     
+    async function manejarCambioEstado() {
+        setExito("")
+        try {
+            setCargangoCambio(true)
+            await cambiarEstado(idValido, estado, tokenValido)
+            setExito("Cambio hecho exitosamente")
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            } else {
+                setError("Ocurrió un error inesperado")
+            }
+        }
+        finally {
+            setCargangoCambio(false)
+        }
+    }
 
     useEffect(() => {
         async function manejarDatos(){
@@ -68,11 +91,18 @@ function DetallePostulacion(){
                 </p>
             ))}
 
-            <select value={estadoId} onChange={evento => setEstadoId(evento.target.value)}>
+            <select value={estado} onChange={evento => setEstado(evento.target.value)}>
                 {estados.map(estado => (
-                    <option key={estado.id} value={estado.id}>{estado.nombre_estado}</option>
+                    <option key={estado.id} value={estado.nombre_estado}>{estado.nombre_estado}</option>
                 ))}
             </select>
+
+            {cargandoCambio && <p>Cargando el cambio...</p>}
+            {exito && <p>{exito}</p>}
+
+            <button onChange={manejarCambioEstado} disabled={cargandoCambio}>
+                {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
+            </button>
             
         </div>
     )
