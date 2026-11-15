@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { type HistorialSalida, type PostulacionSalida } from "../tipos/api";
+import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from "../tipos/api";
 import { useAuth } from "../contextos/AuthContexto";
-import { obtenerHistorial, obtenerPostulacion } from "../servicios/api";
+import { listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 
 function DetallePostulacion(){
@@ -12,6 +12,8 @@ function DetallePostulacion(){
     const [historial, setHistorial] = useState<HistorialSalida[]>([])
     const [error, setError] = useState<string | null>(null)
     const [cargando, setCargando] = useState(false)
+    const [estados, setEstados] = useState<EstadoSalida[]>([])
+    const [estadoId, setEstadoId] = useState("")
 
     const { token } = useAuth()
      
@@ -26,8 +28,10 @@ function DetallePostulacion(){
                 setCargando(true)
                 const respuestaPostulacion = await obtenerPostulacion(idValido, tokenValido)
                 const respuestaHistorial = await obtenerHistorial(idValido, tokenValido)
+                const datosEstado = await listarEstados()
                 setPostulacion(respuestaPostulacion)
                 setHistorial(respuestaHistorial)
+                setEstados(datosEstado)
             }
             catch (error) {
                 if (error instanceof Error) {
@@ -61,6 +65,12 @@ function DetallePostulacion(){
                     })}
                 </p>
             ))}
+
+            <select value={estadoId} onChange={evento => setEstadoId(evento.target.value)}>
+                {estados.map(estado => (
+                    <option key={estado.id} value={estado.id}>{estado.nombre_estado}</option>
+                ))}
+            </select>
             
         </div>
     )
