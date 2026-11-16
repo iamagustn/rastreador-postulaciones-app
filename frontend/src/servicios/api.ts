@@ -1,4 +1,4 @@
-import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, TokenSalida, PostulacionEntrada, MercadoSalida, ModalidadSalida, EstadoSalida, HistorialSalida } from "../tipos/api";
+import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, TokenSalida, PostulacionEntrada, MercadoSalida, ModalidadSalida, EstadoSalida, HistorialSalida, PostulacionParche } from "../tipos/api";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
@@ -115,6 +115,16 @@ export async function cambiarEstado(id: number, estado: string, token: string): 
         method: "PATCH",
         headers: {...cabecera(token), "Content-Type": "application/json"},
         body: JSON.stringify({ estado })
+    });
+    await verificarRespuesta(respuesta)
+    return respuesta.json()
+}
+
+export async function editarPostulacion(id: number, datos: PostulacionParche, token: string): Promise<PostulacionSalida> {
+    const respuesta = await fetch(`${apiUrl}/postulaciones${id}`, {
+        method: "PATCH",
+        headers: {...cabecera(token), "Content-Type": "application/json"},
+        body: JSON.stringify({ datos }),
     });
     await verificarRespuesta(respuesta)
     return respuesta.json()
