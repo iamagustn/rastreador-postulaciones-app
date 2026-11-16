@@ -60,6 +60,7 @@ function DetallePostulacion(){
                 const respuestaHistorial = await obtenerHistorial(idValido, tokenValido)
                 const datosEstado = await listarEstados()
                 setPostulacion(respuestaPostulacion)
+                setEstado(respuestaPostulacion.estado.nombre_estado)
                 setHistorial(respuestaHistorial)
                 setEstados(datosEstado)
             }
