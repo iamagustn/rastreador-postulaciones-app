@@ -16,6 +16,7 @@ function DetallePostulacion(){
     const [cargando, setCargando] = useState(false)
     const [exito, setExito] = useState("")
     const [cargandoCambio, setCargangoCambio] = useState(false)
+    const [contador, setContador] = useState(0)
 
     const [estados, setEstados] = useState<EstadoSalida[]>([])
     const [estado, setEstado] = useState("")
@@ -25,6 +26,11 @@ function DetallePostulacion(){
     const tokenValido: string = token ?? ""
 
     const idValido = Number(id)
+
+    function subirContador() {
+        setContador((valorAnterior) => valorAnterior + 1)
+    }
+
     
     async function manejarCambioEstado() {
         setExito("")
@@ -32,6 +38,7 @@ function DetallePostulacion(){
             setCargangoCambio(true)
             await cambiarEstado(idValido, estado, tokenValido)
             setExito("Cambio hecho exitosamente")
+            subirContador()
         }
         catch (error) {
             if (error instanceof Error) {
@@ -67,7 +74,7 @@ function DetallePostulacion(){
                 setCargando(false)
             }
         } manejarDatos()
-    }, [idValido, tokenValido])
+    }, [idValido, tokenValido, contador])
 
     if (!token) return null
     if (!id || Number.isNaN(idValido)){
@@ -100,7 +107,7 @@ function DetallePostulacion(){
             {cargandoCambio && <p>Cargando el cambio...</p>}
             {exito && <p>{exito}</p>}
 
-            <button onChange={manejarCambioEstado} disabled={cargandoCambio}>
+            <button onClick={manejarCambioEstado} disabled={cargandoCambio}>
                 {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
             </button>
             
