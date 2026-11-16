@@ -79,7 +79,6 @@ function NuevaPostulacion({ subirContador }: Props){
             setMercadoId("")
             setModalidadId("")
             setFechaPostulacion("")
-
         }
         catch (error) {
             if (error instanceof Error){
