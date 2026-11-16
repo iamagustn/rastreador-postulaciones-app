@@ -56,9 +56,12 @@ function DetallePostulacion(){
         async function manejarDatos(){
             try {
                 setCargando(true)
-                const respuestaPostulacion = await obtenerPostulacion(idValido, tokenValido)
-                const respuestaHistorial = await obtenerHistorial(idValido, tokenValido)
-                const datosEstado = await listarEstados()
+                setError(null)
+                const [respuestaPostulacion, respuestaHistorial, datosEstado] = await Promise.all([
+                    obtenerPostulacion(idValido, tokenValido),
+                    obtenerHistorial(idValido, tokenValido),
+                    listarEstados()
+                ])
                 setPostulacion(respuestaPostulacion)
                 setEstado(respuestaPostulacion.estado.nombre_estado)
                 setHistorial(respuestaHistorial)

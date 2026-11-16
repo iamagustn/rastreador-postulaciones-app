@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { crearPostulacion, listarMercados, listarModalidades } from "../servicios/api"
+import { crearPostulacion, listarEstados, listarMercados, listarModalidades } from "../servicios/api"
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api"
 import { useAuth } from "../contextos/AuthContexto";
 
@@ -97,10 +97,11 @@ function NuevaPostulacion({ subirContador }: Props){
     useEffect(() => {
         async function traerCatalogos() {
             try{
-                const datosMercados = await listarMercados()
+                const [datosMercados, datosModalidades] = await Promise.all([
+                    listarMercados(),
+                    listarModalidades(),
+                ])
                 setMercados(datosMercados)
-
-                const datosModalidades = await listarModalidades()
                 setModalidades(datosModalidades)
             }
             catch (error) {
