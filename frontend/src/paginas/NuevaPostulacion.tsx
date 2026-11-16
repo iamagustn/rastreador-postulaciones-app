@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { crearPostulacion, listarEstados, listarMercados, listarModalidades } from "../servicios/api"
+import { crearPostulacion, listarMercados, listarModalidades } from "../servicios/api"
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api"
 import { useAuth } from "../contextos/AuthContexto";
 
