@@ -121,10 +121,10 @@ export async function cambiarEstado(id: number, estado: string, token: string): 
 }
 
 export async function editarPostulacion(id: number, datos: PostulacionParche, token: string): Promise<PostulacionSalida> {
-    const respuesta = await fetch(`${apiUrl}/postulaciones${id}`, {
+    const respuesta = await fetch(`${apiUrl}/postulaciones/${id}`, {
         method: "PATCH",
         headers: {...cabecera(token), "Content-Type": "application/json"},
-        body: JSON.stringify({ datos }),
+        body: JSON.stringify(datos),
     });
     await verificarRespuesta(respuesta)
     return respuesta.json()
