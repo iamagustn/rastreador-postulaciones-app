@@ -5,29 +5,29 @@ import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
 import { Link } from "react-router-dom";
 
-interface Props{
+interface Props {
     contador: number;
 }
 
-function ListarPostulaciones({ contador }: Props){
+function ListarPostulaciones({ contador }: Props) {
 
     const [postulaciones, setPostulaciones] = useState<PostulacionSalida[]>([])
     const [error, setError] = useState<string | null>(null)
-    const [cargando, setCargando] = useState(false)
-    
-    const { token } = useAuth()
-    if (!token) return null
+    const [cargando, setCargando] = useState(true)
 
-    const tokenValido: string = token
-    
+    const { token } = useAuth()
+
     useEffect(() => {
+        if (!token) return
+
         async function manejarPostulaciones() {
-            try{
+            try {
                 setCargando(true)
-                const respuesta = await listarPostulaciones(tokenValido)
+                setError(null)
+                const respuesta = await listarPostulaciones(token!)
                 setPostulaciones(respuesta)
             }
-            catch (error){
+            catch (error) {
                 if (error instanceof Error) {
                     setError(error.message)
                 } else {
@@ -37,18 +37,31 @@ function ListarPostulaciones({ contador }: Props){
             finally {
                 setCargando(false)
             }
-        } manejarPostulaciones()
-    }, [tokenValido, contador])
+        }
+        manejarPostulaciones()
+    }, [token, contador])
+
+    if (!token) return null
+
+    if (cargando) {
+        return <p>Cargando postulaciones...</p>
+    }
+
+    if (error) {
+        return <p>Ocurrió un error: {error}</p>
+    }
+
+    if (postulaciones.length === 0) {
+        return <p>No tienes postulaciones registradas</p>
+    }
 
     return (
         <div>
-            {cargando && <p>Cargando postulaciones...</p>}
-            {error && <p>Ocurrió un error: { error }</p>}
-            {postulaciones.length > 0 ? postulaciones.map(postulacion => 
+            {postulaciones.map(postulacion => (
                 <Link key={postulacion.id} to={`/postulaciones/${postulacion.id}`}>
-                    <TarjetaPostulacion postulacion={postulacion}/>
+                    <TarjetaPostulacion postulacion={postulacion} />
                 </Link>
-            ) : <p>No tienes postulaciones registradas</p>}
+            ))}
         </div>
     )
 }
