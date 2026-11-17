@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api";
 import { editarPostulacion, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
 import { useAuth } from "../contextos/AuthContexto";
@@ -7,6 +7,8 @@ import { useAuth } from "../contextos/AuthContexto";
 function EditarPostulacion() {
     const { id } = useParams()
     const idValido = Number(id)
+
+    const navigate = useNavigate()
 
     // AVISOS
     const [cargando, setCargando] = useState(false)
@@ -59,6 +61,7 @@ function EditarPostulacion() {
             setCargando(true)
             await editarPostulacion(idValido, datosPostulacion, tokenValido)
             setExito("Cambios registrados correctamente")
+            navigate("/postulaciones")
         }
         catch (error) {
             if (error instanceof Error) {
