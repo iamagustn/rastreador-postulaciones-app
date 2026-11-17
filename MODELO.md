@@ -131,29 +131,22 @@ Se utiliza `TIMESTAMPTZ` para almacenar fecha y hora normalizadas en UTC, permit
 **Endpoint afectado:** `POST /usuarios`
 
 **Descripción:**
-Cuando se intenta registrar un correo que ya existe (restricción `UNIQUE` sobre `usuarios.correo`), el endpoint responde con `409 Conflict` y el mensaje "el correo no está disponible". Esto permite que cualquier persona confirme si un correo determinado tiene una cuenta registrada en el sistema, probando direcciones una por una.
+Al intentar registrar un correo que ya existe en la base de datos, el endpoint responde con un error 409 indicando que el correo no está disponible. Esto permite que alguien externo pruebe correos uno por uno y sepa qué direcciones sí están registradas en el sistema.
 
 **Riesgo:**
-- Un atacante puede construir una lista de correos registrados (enumeración de usuarios).
-- Esa lista puede usarse para ataques dirigidos de phishing, credential stuffing o ingeniería social.
-- Dado el carácter de la aplicación (seguimiento de postulaciones laborales), confirmar que una persona usa el sistema revela información sobre su búsqueda de empleo.
+- Un atacante puede armar una lista de correos reales registrados en la plataforma.
+- Con esa lista podría intentar ataques de phishing o probar contraseñas filtradas en otros sitios.
+- Como la aplicación trata sobre búsqueda de empleo, confirmar que un correo existe también expone que esa persona está buscando trabajo.
 
 **Solución ideal (no implementada):**
-Mover la información a un canal autenticado:
-1. El endpoint responde **siempre igual** (por ejemplo, `202 Accepted` con un mensaje genérico como "Si el correo es válido, recibirás instrucciones para continuar"), exista o no la cuenta.
-2. La verdad se comunica **por correo electrónico**:
-   - Si el correo es nuevo: se envía un enlace de verificación para completar el registro.
-   - Si el correo ya existe: se envía un aviso indicando que ya hay una cuenta asociada (con opción de recuperar contraseña).
+Para evitar filtrar esa información, el flujo debería funcionar así:
+1. El endpoint tendría que responder siempre con el mismo mensaje genérico (por ejemplo, "Si el correo es válido, recibirás un código para continuar"), sin importar si la cuenta ya existe o no.
+2. La validación real se haría por correo electrónico enviando un código de confirmación:
+   - Si el correo es nuevo, recibe el código para activar su cuenta..
+   - Si el correo ya estaba registrado, recibe un aviso en su bandeja indicando que ya tiene cuenta.
 
 **Por qué no se implementa:**
-Esta solución depende de un servicio de envío de correos (SMTP, SendGrid, SES u otro), que actualmente no forma parte del proyecto. Agregarlo implica infraestructura, configuración de dominio (SPF/DKIM), manejo de tokens de verificación y costos operativos que exceden el alcance actual.
+Implementar este flujo requiere integrar un servicio externo de envío de correos. Actualmente el proyecto no cuenta con esta infraestructura, ya que implica configuración adicional y costos operativos que quedan fuera del alcance de esta etapa.
 
 **Decisión:**
-Se documenta como **limitación conocida** y se mantiene el comportamiento actual (`409`) para no degradar la experiencia de usuario durante el desarrollo.
-
-**Mitigaciones parciales aplicables sin correo:**
-- Evitar que `POST /login` distinga entre "usuario no existe" y "contraseña incorrecta" (usar un mensaje único como "credenciales inválidas").
-- Registrar (logging) los intentos repetidos de registro con correos ya existentes para detectar abuso.
-
-**Condición para revisar la decisión:**
-Reabrir este punto si el proyecto agrega envío de correos (por ejemplo, para verificación de cuenta o recuperación de contraseña), momento en el que la solución ideal se vuelve de bajo costo marginal.
+Se deja documentado como una limitación conocida y se mantiene la validación actual (409) para que el flujo de registro siga siendo funcional y claro para el usuario durante el desarrollo. En cuanto el proyecto integre un servicio de correo (por ejemplo, para recuperación de contraseñas), se aplicará esta mejora.
