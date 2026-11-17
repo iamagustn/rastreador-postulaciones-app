@@ -56,7 +56,7 @@ function DetallePostulacion(){
     async function manejarBorrado() {
         const respuesta = confirm("¿Estás seguro de que deseas eliminar esta postulación? (Este cambio sera irreversible)");
         if (!respuesta) return
-        
+
         try {
             await borrarPostulacion(idValido, tokenValido)
             navigate("/postulaciones")
@@ -104,8 +104,8 @@ function DetallePostulacion(){
     }
     return (
         <div>
-            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>
-            <button onClick={manejarBorrado}>Borrar postulación</button>
+            {postulacion && <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>}
+            {postulacion && <button onClick={manejarBorrado}>Borrar postulación</button>}
 
             {cargando && <p>Cargando postulaciones...</p>}
             {error && <p>Ocurrió un error: { error }</p>}
