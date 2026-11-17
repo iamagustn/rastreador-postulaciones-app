@@ -1,6 +1,7 @@
 import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, TokenSalida, PostulacionEntrada, MercadoSalida, ModalidadSalida, EstadoSalida, HistorialSalida, PostulacionParche } from "../tipos/api";
 
 const apiUrl = import.meta.env.VITE_API_URL
+let alRecibir401: (() => void) | null = null
 
 function cabecera(token: string){
     const cabecera = { "Authorization": "Bearer " + token }
@@ -9,9 +10,16 @@ function cabecera(token: string){
 
 async function verificarRespuesta(respuesta: Response){
     if (!respuesta.ok){
+        if (respuesta.status === 401 && alRecibir401) {
+            alRecibir401()
+        }
         const cuerpo = await respuesta.json()
         throw new Error(cuerpo.detail)
     }
+}
+
+export function registrarManejador401(funcion: () => void) {
+    alRecibir401 = funcion
 }
 
 export async function registrarUsuario(usuario: UsuarioEntrada): Promise<UsuarioSalida> {

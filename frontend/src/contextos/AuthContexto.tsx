@@ -1,6 +1,8 @@
 import { createContext ,useState, useContext } from "react"
 import {  useNavigate } from "react-router-dom"
 import { type ReactNode } from "react";
+import { useEffect } from "react";
+import { registrarManejador401 } from "../servicios/api";
 
 interface ValorAuth {
     token: string | null;
@@ -25,6 +27,10 @@ export function ProveedorAuth({ children }: { children: ReactNode }) {
     localStorage.removeItem("token");
     navigate("/login");
   }
+  
+  useEffect(() => {
+    registrarManejador401(removerToken)
+  }, [])
 
   return (
     <AuthContexto.Provider value={{ token, guardarToken, removerToken }}>
