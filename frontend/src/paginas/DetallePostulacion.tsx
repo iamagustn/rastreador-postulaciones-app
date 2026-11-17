@@ -86,7 +86,7 @@ function DetallePostulacion(){
     }
     return (
         <div>
-            <Link to="/postulaciones/:id/editar">Editar postulacion</Link>
+            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulacion</Link>
             {cargando && <p>Cargando postulaciones...</p>}
             {error && <p>Ocurrió un error: { error }</p>}
             {postulacion && <TarjetaPostulacion key={postulacion.id} postulacion={postulacion}/>}
