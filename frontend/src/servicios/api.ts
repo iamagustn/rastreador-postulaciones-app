@@ -3,6 +3,10 @@ import type { UsuarioEntrada, UsuarioSalida, LoginEntrada, PostulacionSalida, To
 const apiUrl = import.meta.env.VITE_API_URL
 let alRecibir401: (() => void) | null = null
 
+export class ErrorApi extends Error {
+    idError?: string
+}
+
 function cabecera(token: string){
     const cabecera = { "Authorization": "Bearer " + token }
     return cabecera
@@ -14,7 +18,9 @@ async function verificarRespuesta(respuesta: Response){
             alRecibir401()
         }
         const cuerpo = await respuesta.json()
-        throw new Error(cuerpo.detail)
+        const fallo = new ErrorApi(cuerpo.detail)
+        fallo.idError = cuerpo.id_error
+        throw fallo
     }
 }
 
