@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from "../tipos/api";
 import { useAuth } from "../contextos/AuthContexto";
@@ -86,6 +86,7 @@ function DetallePostulacion(){
     }
     return (
         <div>
+            <Link to="/postulaciones/:id/editar">Editar postulacion</Link>
             {cargando && <p>Cargando postulaciones...</p>}
             {error && <p>Ocurrió un error: { error }</p>}
             {postulacion && <TarjetaPostulacion key={postulacion.id} postulacion={postulacion}/>}

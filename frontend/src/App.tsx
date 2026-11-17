@@ -7,6 +7,7 @@ import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import RutaProtegida from "./componentes/RutaProtegida"
 import { useAuth } from "./contextos/AuthContexto"
 import DetallePostulacion from "./paginas/DetallePostulacion"
+import EditarPostulacion from "./paginas/EditarPostulacion"
 
 function App() {
 
@@ -47,6 +48,12 @@ function App() {
       <Route path="/postulaciones/:id" element={
         <RutaProtegida>
           <DetallePostulacion />
+        </RutaProtegida>
+      }/>
+
+      <Route path="/postulaciones/:id/editar" element={
+        <RutaProtegida>
+          <EditarPostulacion />
         </RutaProtegida>
       }/>
 
