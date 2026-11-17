@@ -5,7 +5,7 @@ import { useAuth } from "../contextos/AuthContexto";
 import { borrarPostulacion, cambiarEstado, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 
-function DetallePostulacion(){
+function DetallePostulacion() {
 
     const { id } = useParams();
     const navigate = useNavigate()
@@ -14,7 +14,7 @@ function DetallePostulacion(){
     const [historial, setHistorial] = useState<HistorialSalida[]>([])
 
     const [error, setError] = useState<string | null>(null)
-    const [cargando, setCargando] = useState(false)
+    const [cargando, setCargando] = useState(true)
     const [exito, setExito] = useState("")
     const [cargandoCambio, setCargangoCambio] = useState(false)
     const [contador, setContador] = useState(0)
@@ -23,7 +23,7 @@ function DetallePostulacion(){
     const [estado, setEstado] = useState("")
 
     const { token } = useAuth()
-     
+
     const tokenValido: string = token ?? ""
 
     const idValido = Number(id)
@@ -32,8 +32,9 @@ function DetallePostulacion(){
         setContador((valorAnterior) => valorAnterior + 1)
     }
 
-    
+
     async function manejarCambioEstado() {
+        setError(null)
         setExito("")
         try {
             setCargangoCambio(true)
@@ -71,7 +72,9 @@ function DetallePostulacion(){
     }
 
     useEffect(() => {
-        async function manejarDatos(){
+        if (!tokenValido || !id || Number.isNaN(idValido)) return
+
+        async function manejarDatos() {
             try {
                 setCargando(true)
                 setError(null)
@@ -96,21 +99,32 @@ function DetallePostulacion(){
                 setCargando(false)
             }
         } manejarDatos()
-    }, [idValido, tokenValido, contador])
+    }, [id, idValido, tokenValido, contador])
 
     if (!token) return null
-    if (!id || Number.isNaN(idValido)){
+    if (!id || Number.isNaN(idValido)) {
         return <p>El ID es invalido</p>
     }
+
+    if (cargando && !postulacion) {
+        return <p>Cargando postulacion...</p>
+    }
+
+    if (error && !postulacion) {
+        return <p>Ocurrió un error: {error}</p>
+    }
+
+    if (!postulacion) {
+        return <p>La postulación no existe</p>
+    }
+
     return (
         <div>
-            {postulacion && <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>}
-            {postulacion && <button onClick={manejarBorrado}>Borrar postulación</button>}
+            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>
+            <button onClick={manejarBorrado}>Borrar postulación</button>
 
-            {cargando && <p>Cargando postulaciones...</p>}
-            {error && <p>Ocurrió un error: { error }</p>}
-            {postulacion && <TarjetaPostulacion key={postulacion.id} postulacion={postulacion}/>}
-            
+            <TarjetaPostulacion key={postulacion.id} postulacion={postulacion} />
+
             {historial.map(entrada => (
                 <p key={entrada.id}>
                     {entrada.estado.nombre_estado} — {new Date(entrada.fecha).toLocaleString('es-MX', {
@@ -130,12 +144,13 @@ function DetallePostulacion(){
             </select>
 
             {cargandoCambio && <p>Cargando el cambio...</p>}
+            {error && <p>Ocurrió un error: {error}</p>}
             {exito && <p>{exito}</p>}
 
             <button onClick={manejarCambioEstado} disabled={cargandoCambio}>
                 {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
             </button>
-            
+
         </div>
     )
 }
