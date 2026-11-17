@@ -129,3 +129,11 @@ export async function editarPostulacion(id: number, datos: PostulacionParche, to
     await verificarRespuesta(respuesta)
     return respuesta.json()
 }
+
+export async function borrarPostulacion(id: number, token: string): Promise<void> {
+    const respuesta = await fetch(`${apiUrl}/postulaciones/${id}`, {
+        method: "DELETE",
+        headers: cabecera(token)
+    })
+    await verificarRespuesta(respuesta)
+}
