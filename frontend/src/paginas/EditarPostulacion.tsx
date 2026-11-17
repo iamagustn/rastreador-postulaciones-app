@@ -39,7 +39,7 @@ function EditarPostulacion() {
         if (!puesto) { listaAviso.push("Puesto")}
         if (!fechaPostulacion) { listaAviso.push("Fecha de postulación")}
 
-        if (listaAviso.length > 1) {
+        if (listaAviso.length > 0) {
             setAviso("Llena los siguientes campos: " + listaAviso.join(', '))
             return
         }
@@ -49,7 +49,7 @@ function EditarPostulacion() {
 
         const datosPostulacion = {
             puesto: puesto,
-            sueldo: sueldoNumerico > 0 ? sueldoCentavos : null,
+            sueldo_centavos: sueldoNumerico > 0 ? sueldoCentavos : null,
             mercado_id: mercadoId ? parseInt(mercadoId) : null,
             modalidad_id: modalidadId ? parseInt(modalidadId) : null,
             fecha_postulacion: fechaPostulacion
@@ -59,11 +59,6 @@ function EditarPostulacion() {
             setCargando(true)
             await editarPostulacion(idValido, datosPostulacion, tokenValido)
             setExito("Cambios registrados correctamente")
-            setPuesto("")
-            setSueldo("")
-            setMercadoId("")
-            setModalidadId("")
-            setFechaPostulacion("")
         }
         catch (error) {
             if (error instanceof Error) {
@@ -88,9 +83,9 @@ function EditarPostulacion() {
                 setMercados(datosMercados)
                 setModalidades(datosModalidades)
                 setPuesto(respuestaPostulacion.puesto)
-                setSueldo(respuestaPostulacion.sueldo_centavos !== null ? respuestaPostulacion.sueldo_centavos / 100.0 : null)
-                setMercadoId(respuestaPostulacion.mercado.nombre)
-                setModalidadId(respuestaPostulacion.modalidad.nombre)
+                setSueldo(respuestaPostulacion.sueldo_centavos ? (respuestaPostulacion.sueldo_centavos / 100.0).toString() : "")
+                setMercadoId(respuestaPostulacion.mercado ? (respuestaPostulacion.mercado.id).toString() : "")
+                setModalidadId(respuestaPostulacion.modalidad ? (respuestaPostulacion.modalidad.id).toString() : "")
                 setFechaPostulacion(respuestaPostulacion.fecha_postulacion)
             }
             catch (error) {
