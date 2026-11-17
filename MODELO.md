@@ -112,10 +112,48 @@ Se utiliza `TIMESTAMPTZ` para almacenar fecha y hora normalizadas en UTC, permit
 
 - Las empresas se manejan de forma global y no por usuario. Esto evita duplicar información cuando distintos usuarios se postulan a la misma empresa. Como medida para reducir inconsistencias en nombres similares o escritos de forma diferente, el frontend mostrará las empresas ya registradas mediante listas desplegables.
 
-- Los estados se modelaron mediante una tabla catálogo en lugar de un `CHECK`. Esto facilita agregar o  modificar estados sin necesidad de alterar restricciones complejas de la base de datos. El costo es la necesidad de realizar consultas con JOIN, a cambio de una mayor flexibilidad.
+- Los estados se modelaron mediante una tabla catálogo en lugar de un `CHECK`. Esto facilita agregar o modificar estados sin necesidad de alterar restricciones complejas de la base de datos. El costo es la necesidad de realizar consultas con JOIN, a cambio de una mayor flexibilidad.
 
-- `usuario_id` va donde esta el dato que le pertenece a alguien. A través de una postulación es posible identificar al usuario y acceder indirectamente al resto de la información relacionada.
+- `usuario_id` va donde está el dato que le pertenece a alguien. A través de una postulación es posible identificar al usuario y acceder indirectamente al resto de la información relacionada.
 
 - Se descartó la restricción que impedía registrar más de una postulación para la misma empresa. Un usuario puede postularse varias veces a una empresa para puestos distintos o en momentos diferentes, por lo que dicha restricción no representaba correctamente la realidad del negocio.
 
 - El estado actual de la postulación se conserva en `postulaciones.estado_id` y, al mismo tiempo, cada cambio queda registrado en `historial_estados`. Esta es una desnormalización deliberada que permite consultar rápidamente el estado actual sin recalcularlo desde el historial. Para evitar inconsistencias, ambas actualizaciones deberán realizarse dentro de la misma transacción.
+
+- Se acepta como **limitación conocida** la enumeración de usuarios en el registro (`POST /usuarios`). La mitigación completa requiere envío de correos, que el proyecto no incluye actualmente. El detalle se documenta en la sección "Limitaciones conocidas".
+
+---
+
+# Limitaciones conocidas
+
+## Enumeración de usuarios en el registro
+
+**Endpoint afectado:** `POST /usuarios`
+
+**Descripción:**
+Cuando se intenta registrar un correo que ya existe (restricción `UNIQUE` sobre `usuarios.correo`), el endpoint responde con `409 Conflict` y el mensaje "el correo no está disponible". Esto permite que cualquier persona confirme si un correo determinado tiene una cuenta registrada en el sistema, probando direcciones una por una.
+
+**Riesgo:**
+- Un atacante puede construir una lista de correos registrados (enumeración de usuarios).
+- Esa lista puede usarse para ataques dirigidos de phishing, credential stuffing o ingeniería social.
+- Dado el carácter de la aplicación (seguimiento de postulaciones laborales), confirmar que una persona usa el sistema revela información sobre su búsqueda de empleo.
+
+**Solución ideal (no implementada):**
+Mover la información a un canal autenticado:
+1. El endpoint responde **siempre igual** (por ejemplo, `202 Accepted` con un mensaje genérico como "Si el correo es válido, recibirás instrucciones para continuar"), exista o no la cuenta.
+2. La verdad se comunica **por correo electrónico**:
+   - Si el correo es nuevo: se envía un enlace de verificación para completar el registro.
+   - Si el correo ya existe: se envía un aviso indicando que ya hay una cuenta asociada (con opción de recuperar contraseña).
+
+**Por qué no se implementa:**
+Esta solución depende de un servicio de envío de correos (SMTP, SendGrid, SES u otro), que actualmente no forma parte del proyecto. Agregarlo implica infraestructura, configuración de dominio (SPF/DKIM), manejo de tokens de verificación y costos operativos que exceden el alcance actual.
+
+**Decisión:**
+Se documenta como **limitación conocida** y se mantiene el comportamiento actual (`409`) para no degradar la experiencia de usuario durante el desarrollo.
+
+**Mitigaciones parciales aplicables sin correo:**
+- Evitar que `POST /login` distinga entre "usuario no existe" y "contraseña incorrecta" (usar un mensaje único como "credenciales inválidas").
+- Registrar (logging) los intentos repetidos de registro con correos ya existentes para detectar abuso.
+
+**Condición para revisar la decisión:**
+Reabrir este punto si el proyecto agrega envío de correos (por ejemplo, para verificación de cuenta o recuperación de contraseña), momento en el que la solución ideal se vuelve de bajo costo marginal.
