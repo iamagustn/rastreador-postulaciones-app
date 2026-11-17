@@ -1,13 +1,14 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from "../tipos/api";
 import { useAuth } from "../contextos/AuthContexto";
-import { cambiarEstado, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
+import { borrarPostulacion, cambiarEstado, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 
 function DetallePostulacion(){
 
     const { id } = useParams();
+    const navigate = useNavigate()
 
     const [postulacion, setPostulacion] = useState<PostulacionSalida>()
     const [historial, setHistorial] = useState<HistorialSalida[]>([])
@@ -52,6 +53,23 @@ function DetallePostulacion(){
         }
     }
 
+    async function manejarBorrado() {
+        const respuesta = confirm("¿Estás seguro de que deseas eliminar esta postulación? (Este cambio sera irreversible)");
+        if (!respuesta) return
+        
+        try {
+            await borrarPostulacion(idValido, tokenValido)
+            navigate("/postulaciones")
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                setError(error.message)
+            } else {
+                setError("Ocurrió un error inesperado")
+            }
+        }
+    }
+
     useEffect(() => {
         async function manejarDatos(){
             try {
@@ -86,7 +104,9 @@ function DetallePostulacion(){
     }
     return (
         <div>
-            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulacion</Link>
+            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>
+            <button onClick={manejarBorrado}>Borrar postulación</button>
+
             {cargando && <p>Cargando postulaciones...</p>}
             {error && <p>Ocurrió un error: { error }</p>}
             {postulacion && <TarjetaPostulacion key={postulacion.id} postulacion={postulacion}/>}
