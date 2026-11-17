@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api";
-import { editarPostulacion, listarMercados, listarModalidades } from "../servicios/api";
+import { editarPostulacion, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
 import { useAuth } from "../contextos/AuthContexto";
 
 function EditarPostulacion() {
@@ -80,12 +80,18 @@ function EditarPostulacion() {
     useEffect(() => {
         async function traerCatalogos() {
             try {
-                const [datosMercados, datosModalidades] = await Promise.all([
+                const [datosMercados, datosModalidades, respuestaPostulacion] = await Promise.all([
                     listarMercados(),
                     listarModalidades(),
+                    obtenerPostulacion(idValido, tokenValido)
                 ])
                 setMercados(datosMercados)
                 setModalidades(datosModalidades)
+                setPuesto(respuestaPostulacion.puesto)
+                setSueldo(respuestaPostulacion.sueldo_centavos !== null ? respuestaPostulacion.sueldo_centavos / 100.0 : null)
+                setMercadoId(respuestaPostulacion.mercado.nombre)
+                setModalidadId(respuestaPostulacion.modalidad.nombre)
+                setFechaPostulacion(respuestaPostulacion.fecha_postulacion)
             }
             catch (error) {
                 if (error instanceof Error) {
