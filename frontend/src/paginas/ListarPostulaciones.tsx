@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import type { PostulacionSalida } from "../tipos/api";
-import { listarPostulaciones } from "../servicios/api";
+import { ErrorApi, listarPostulaciones } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
 import { Link } from "react-router-dom";
+import MensajeError from "../componentes/MensajeError";
 
 interface Props {
     contador: number;
@@ -14,6 +15,7 @@ function ListarPostulaciones({ contador }: Props) {
     const [postulaciones, setPostulaciones] = useState<PostulacionSalida[]>([])
     const [error, setError] = useState<string | null>(null)
     const [cargando, setCargando] = useState(true)
+    const [idError, setIdError] = useState<string | null>(null)
 
     const { token } = useAuth()
 
@@ -24,12 +26,14 @@ function ListarPostulaciones({ contador }: Props) {
             try {
                 setCargando(true)
                 setError(null)
+                setIdError(null)
                 const respuesta = await listarPostulaciones(token!)
                 setPostulaciones(respuesta)
             }
             catch (error) {
-                if (error instanceof Error) {
+                if (error instanceof ErrorApi) {
                     setError(error.message)
+                    setIdError(error.idError ?? null)
                 } else {
                     setError("Ocurrió un error inesperado")
                 }
@@ -48,7 +52,7 @@ function ListarPostulaciones({ contador }: Props) {
     }
 
     if (error) {
-        return <p>Ocurrió un error: {error}</p>
+        return <MensajeError error={error} idError={idError}/>
     }
 
     if (postulaciones.length === 0) {

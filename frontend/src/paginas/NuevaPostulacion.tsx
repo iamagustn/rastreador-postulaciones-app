@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react"
-import { crearPostulacion, listarMercados, listarModalidades } from "../servicios/api"
+import { crearPostulacion, ErrorApi, listarMercados, listarModalidades } from "../servicios/api"
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api"
 import { useAuth } from "../contextos/AuthContexto";
+import MensajeError from "../componentes/MensajeError";
 
 interface Props {
     subirContador: () => void;
@@ -13,6 +14,7 @@ function NuevaPostulacion({ subirContador }: Props) {
     const [cargando, setCargando] = useState(false)
     const [cargandoCatalogos, setCargandoCatalogos] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [idError, setIdError] = useState<string | null>(null)
     const [errorCatalogos, setErrorCatalogos] = useState<string | null>(null)
     const [aviso, setAviso] = useState("")
     const [exito, setExito] = useState("")
@@ -48,8 +50,9 @@ function NuevaPostulacion({ subirContador }: Props) {
                 setModalidades(datosModalidades)
             }
             catch (error) {
-                if (error instanceof Error) {
+                if (error instanceof ErrorApi) {
                     setErrorCatalogos(error.message)
+                    setIdError(error.idError ?? null)
                 } else {
                     setErrorCatalogos("Ocurrió un error al cargar los catálogos")
                 }
@@ -70,12 +73,13 @@ function NuevaPostulacion({ subirContador }: Props) {
     }
 
     if (errorCatalogos) {
-        return <p>Ocurrió un error al cargar los catálogos: {errorCatalogos}</p>
+        return <MensajeError error={errorCatalogos} idError={idError}/>
     }
 
     async function manejarRegistro() {
 
         setError(null)
+        setIdError(null)
         setAviso("")
         setExito("")
 
@@ -121,8 +125,9 @@ function NuevaPostulacion({ subirContador }: Props) {
             setFechaPostulacion("")
         }
         catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof ErrorApi) {
                 setError(error.message)
+                setIdError(error.idError ?? null)
             } else {
                 setError("Ocurrió un error inesperado")
             }
@@ -187,7 +192,7 @@ function NuevaPostulacion({ subirContador }: Props) {
             {/* MENSAJES */}
             {aviso && <p>{aviso}</p>}
             {cargando && <p>Espera un momento...</p>}
-            {error && <p>Ocurrió un error: {error}</p>}
+            {error && <MensajeError error={error} idError={idError}/>}
             {exito && <p>{exito}</p>}
 
             <button onClick={manejarRegistro} disabled={cargando}>

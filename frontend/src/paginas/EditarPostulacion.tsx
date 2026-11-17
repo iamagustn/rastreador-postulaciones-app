@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api";
-import { editarPostulacion, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
+import { editarPostulacion, ErrorApi, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
 import { useAuth } from "../contextos/AuthContexto";
+import MensajeError from "../componentes/MensajeError";
 
 function EditarPostulacion() {
   const { id } = useParams()
@@ -13,6 +14,7 @@ function EditarPostulacion() {
   const [cargando, setCargando] = useState(false)
   const [cargandoDatos, setCargandoDatos] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [idError, setIdError] = useState<string | null>(null)
   const [aviso, setAviso] = useState("")
   const [exito, setExito] = useState("")
 
@@ -54,8 +56,9 @@ function EditarPostulacion() {
         setFechaPostulacion(respuestaPostulacion.fecha_postulacion)
 
       } catch (error) {
-        if (error instanceof Error) {
+        if (error instanceof ErrorApi) {
           setError(error.message)
+          setIdError(error.idError ?? null)
         } else {
           setError("Ocurrió un error inesperado")
         }
@@ -79,11 +82,12 @@ function EditarPostulacion() {
   }
 
   if (error && !puesto) {
-    return <p>Ocurrió un error: {error}</p>
+    return <MensajeError error={error} idError={idError}/>
   }
 
   async function manejarEdicion() {
     setError(null)
+    setIdError(null)
     setAviso("")
     setExito("")
 
@@ -113,8 +117,9 @@ function EditarPostulacion() {
       navigate("/postulaciones")
 
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof ErrorApi) {
         setError(error.message)
+        setIdError(error.idError ?? null)
       } else {
         setError("Ocurrió un error inesperado")
       }
@@ -159,7 +164,7 @@ function EditarPostulacion() {
       
       {aviso && <p>{aviso}</p>}
       {cargando && <p>Espera un momento...</p>}
-      {error && <p>Ocurrió un error: {error}</p>}
+      {error && <MensajeError error={error} idError={idError}/>}
       {exito && <p>{exito}</p>}
       
       <button onClick={manejarEdicion} disabled={cargando}>

@@ -2,8 +2,9 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from "../tipos/api";
 import { useAuth } from "../contextos/AuthContexto";
-import { borrarPostulacion, cambiarEstado, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
+import { borrarPostulacion, cambiarEstado, ErrorApi, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
+import MensajeError from "../componentes/MensajeError";
 
 function DetallePostulacion() {
 
@@ -14,6 +15,7 @@ function DetallePostulacion() {
     const [historial, setHistorial] = useState<HistorialSalida[]>([])
 
     const [error, setError] = useState<string | null>(null)
+    const [idError, setIdError] = useState<string | null>(null)
     const [cargando, setCargando] = useState(true)
     const [exito, setExito] = useState("")
     const [cargandoCambio, setCargangoCambio] = useState(false)
@@ -32,9 +34,9 @@ function DetallePostulacion() {
         setContador((valorAnterior) => valorAnterior + 1)
     }
 
-
     async function manejarCambioEstado() {
         setError(null)
+        setIdError(null)
         setExito("")
         try {
             setCargangoCambio(true)
@@ -43,8 +45,9 @@ function DetallePostulacion() {
             subirContador()
         }
         catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof ErrorApi) {
                 setError(error.message)
+                setIdError(error.idError ?? null)
             } else {
                 setError("Ocurrió un error inesperado")
             }
@@ -63,8 +66,9 @@ function DetallePostulacion() {
             navigate("/postulaciones")
         }
         catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof ErrorApi) {
                 setError(error.message)
+                setIdError(error.idError ?? null)
             } else {
                 setError("Ocurrió un error inesperado")
             }
@@ -78,6 +82,7 @@ function DetallePostulacion() {
             try {
                 setCargando(true)
                 setError(null)
+                setIdError(null)
                 const [respuestaPostulacion, respuestaHistorial, datosEstado] = await Promise.all([
                     obtenerPostulacion(idValido, tokenValido),
                     obtenerHistorial(idValido, tokenValido),
@@ -89,8 +94,9 @@ function DetallePostulacion() {
                 setEstados(datosEstado)
             }
             catch (error) {
-                if (error instanceof Error) {
+                if (error instanceof ErrorApi) {
                     setError(error.message)
+                    setIdError(error.idError ??  null)
                 } else {
                     setError("Ocurrió un error inesperado")
                 }
@@ -111,7 +117,7 @@ function DetallePostulacion() {
     }
 
     if (error && !postulacion) {
-        return <p>Ocurrió un error: {error}</p>
+        return <MensajeError error={error} idError={idError}/>
     }
 
     if (!postulacion) {
@@ -144,7 +150,7 @@ function DetallePostulacion() {
             </select>
 
             {cargandoCambio && <p>Cargando el cambio...</p>}
-            {error && <p>Ocurrió un error: {error}</p>}
+            {error && <MensajeError error={error} idError={idError}/>}
             {exito && <p>{exito}</p>}
 
             <button onClick={manejarCambioEstado} disabled={cargandoCambio}>

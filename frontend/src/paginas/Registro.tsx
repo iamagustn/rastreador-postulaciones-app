@@ -1,13 +1,15 @@
 import { useState } from "react"
-import { iniciarSesion, registrarUsuario } from "../servicios/api"
+import { ErrorApi, iniciarSesion, registrarUsuario } from "../servicios/api"
 import { Link } from "react-router-dom";
 import { useAuth } from "../contextos/AuthContexto";
+import MensajeError from "../componentes/MensajeError";
 
 
 function Registro() {
 
     const [cargando, setCargando] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [idError, setIdError] = useState<string | null>(null)
     const [aviso, setAviso] = useState("")
 
     const [nombre, setNombre] = useState("")
@@ -49,8 +51,9 @@ function Registro() {
             guardarToken(respuestaLogin.access_token)
         }
         catch (error) {
-            if (error instanceof Error) {
+            if (error instanceof ErrorApi) {
                 setError(error.message)
+                setIdError(error.idError ?? null)
             } else {
                 setError("Ocurrió un error inesperado")
             }
@@ -88,7 +91,7 @@ function Registro() {
 
             {aviso && <p>{aviso}</p>}
             {cargando && <p>Espera un momento...</p>}
-            {error && <p>Ocurrió un error: {error}</p>}
+            {error && <MensajeError error={error} idError={idError}/>}
 
             <button onClick={manejarRegistro}>Registrarse</button>
             <Link to="/login">¿Ya tienes cuenta? Inicia sesión</Link>
