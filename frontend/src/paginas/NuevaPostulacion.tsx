@@ -7,11 +7,13 @@ interface Props {
     subirContador: () => void;
 }
 
-function NuevaPostulacion({ subirContador }: Props){
+function NuevaPostulacion({ subirContador }: Props) {
 
     // AVISOS
     const [cargando, setCargando] = useState(false)
+    const [cargandoCatalogos, setCargandoCatalogos] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [errorCatalogos, setErrorCatalogos] = useState<string | null>(null)
     const [aviso, setAviso] = useState("")
     const [exito, setExito] = useState("")
 
@@ -29,9 +31,47 @@ function NuevaPostulacion({ subirContador }: Props){
     const [fechaPostulacion, setFechaPostulacion] = useState("")
 
     const { token } = useAuth()
-    if (!token) return null
 
+    // Listar mercados y modalidades para ser usados en <select>
+    useEffect(() => {
+        if (!token) return
+
+        async function traerCatalogos() {
+            try {
+                setCargandoCatalogos(true)
+                setErrorCatalogos(null)
+                const [datosMercados, datosModalidades] = await Promise.all([
+                    listarMercados(),
+                    listarModalidades(),
+                ])
+                setMercados(datosMercados)
+                setModalidades(datosModalidades)
+            }
+            catch (error) {
+                if (error instanceof Error) {
+                    setErrorCatalogos(error.message)
+                } else {
+                    setErrorCatalogos("Ocurrió un error al cargar los catálogos")
+                }
+            }
+            finally {
+                setCargandoCatalogos(false)
+            }
+        }
+
+        traerCatalogos()
+    }, [token])
+
+    if (!token) return null
     const tokenValido: string = token
+
+    if (cargandoCatalogos) {
+        return <p>Cargando formulario...</p>
+    }
+
+    if (errorCatalogos) {
+        return <p>Ocurrió un error al cargar los catálogos: {errorCatalogos}</p>
+    }
 
     async function manejarRegistro() {
 
@@ -41,11 +81,11 @@ function NuevaPostulacion({ subirContador }: Props){
 
         const listaAviso: string[] = []
 
-        if (!puesto) { listaAviso.push("Puesto")}
-        if (!empresa) { listaAviso.push("Empresa")}
-        if (!fechaPostulacion) { listaAviso.push("Fecha de postulación")}
+        if (!puesto) { listaAviso.push("Puesto") }
+        if (!empresa) { listaAviso.push("Empresa") }
+        if (!fechaPostulacion) { listaAviso.push("Fecha de postulación") }
 
-        if (listaAviso.length > 0){
+        if (listaAviso.length > 0) {
             setAviso("Llena los siguientes campos: " + listaAviso.join(', '))
             return
         }
@@ -71,7 +111,7 @@ function NuevaPostulacion({ subirContador }: Props){
             subirContador()
 
             setExito("Postulación registrada correctamente")
-            
+
             setPuesto("")
             setSueldo("")
             setEmpresa("")
@@ -81,7 +121,7 @@ function NuevaPostulacion({ subirContador }: Props){
             setFechaPostulacion("")
         }
         catch (error) {
-            if (error instanceof Error){
+            if (error instanceof Error) {
                 setError(error.message)
             } else {
                 setError("Ocurrió un error inesperado")
@@ -92,58 +132,35 @@ function NuevaPostulacion({ subirContador }: Props){
         }
     }
 
-    // Listar mercados y modalidades para ser usados en <select>
-    useEffect(() => {
-        async function traerCatalogos() {
-            try{
-                const [datosMercados, datosModalidades] = await Promise.all([
-                    listarMercados(),
-                    listarModalidades(),
-                ])
-                setMercados(datosMercados)
-                setModalidades(datosModalidades)
-            }
-            catch (error) {
-                if (error instanceof Error) {
-                    setError(error.message)
-                } else {
-                    setError("Ocurrió un error inesperado")
-                }
-            }
-        }
-
-        traerCatalogos()
-    }, [])
-
-    return(
+    return (
         <div>
             {/* PUESTO */}
             <input
                 type="text"
                 value={puesto}
                 onChange={evento => setPuesto(evento.target.value)}
-                placeholder="Nombre del puesto de la vacante"/>
+                placeholder="Nombre del puesto de la vacante" />
 
             {/* SUELDO */}
             <input
                 type="number"
                 value={sueldo}
                 onChange={evento => setSueldo(evento.target.value)}
-                placeholder="Sueldo de la vacante (opcional)"/>
+                placeholder="Sueldo de la vacante (opcional)" />
 
             {/* EMPRESA */}
             <input
                 type="text"
                 value={empresa}
                 onChange={evento => setEmpresa(evento.target.value)}
-                placeholder="Empresa que publicó la vacante"/>
+                placeholder="Empresa que publicó la vacante" />
 
             {/* PORTAL */}
             <input
                 type="text"
                 value={portal}
                 onChange={evento => setPortal(evento.target.value)}
-                placeholder="Portal donde salió la vacante (opcional)"/>
+                placeholder="Portal donde salió la vacante (opcional)" />
 
             {/* LISTA DE MERCADOS */}
             <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)}>
@@ -165,7 +182,7 @@ function NuevaPostulacion({ subirContador }: Props){
             <input
                 type="date"
                 value={fechaPostulacion}
-                onChange={evento => setFechaPostulacion(evento.target.value)}/>
+                onChange={evento => setFechaPostulacion(evento.target.value)} />
 
             {/* MENSAJES */}
             {aviso && <p>{aviso}</p>}
