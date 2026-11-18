@@ -219,10 +219,10 @@ function NuevaPostulacion({ subirContador }: Props) {
                 </div>
 
                 {/* MENSAJES */}
-                {aviso && <p>{aviso}</p>}
+                {aviso && <p className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">{aviso}</p>}
                 {cargando && <p>Espera un momento...</p>}
                 {error && <MensajeError error={error} idError={idError}/>}
-                {exito && <p>{exito}</p>}
+                {exito && <p className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">{exito}</p>}
 
                 <button onClick={manejarRegistro} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
                     {cargando ? "Registrando..." : "Registrar postulación"}
