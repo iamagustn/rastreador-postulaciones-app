@@ -52,7 +52,7 @@ function Login(){
     return (
         <div className="min-h-screen flex items-center justify-center bg-fondo p-4">
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
-                <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
+                <h1 className="text-2xl font-bold text-center">Iniciar Sesión</h1>
 
                 <input
                     className="w-full p-2 border border-borde rounded"
