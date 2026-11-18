@@ -22,7 +22,12 @@ function App() {
     <>
     <nav className="bg-marino text-white p-4 flex items-center gap-4 justify-between">
       <div className="flex items-center gap-6">
-        <Link to="/" className="font-bold text-lg">Rastreador de Postulaciones</Link>
+
+        <Link to="/" className="font-bold text-lg">
+          <span className="md:hidden">Rastreador</span>
+          <span className="hidden md:inline">Rastreador de Postulaciones</span>
+        </Link>
+
         {token && <Link to="/postulaciones">Mis postulaciones</Link>}
         {token && <Link to="/postulaciones/nueva">Nueva postulación</Link>}
       </div>
