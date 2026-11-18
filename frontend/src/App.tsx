@@ -21,8 +21,6 @@ function App() {
   return (
     <>
     <nav>
-      {!token && <Link to="/login">Iniciar sesión</Link>}
-      {!token && <Link to="/registro">Registrarse</Link>}
       {token && <Link to="/postulaciones">Mis postulaciones</Link>}
       {token && <Link to="/postulaciones/nueva">Nueva postulación</Link>}
       {token && <button onClick={removerToken}>Cerrar sesión</button>}
