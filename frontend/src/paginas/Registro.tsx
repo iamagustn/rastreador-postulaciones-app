@@ -20,6 +20,9 @@ function Registro() {
     const { guardarToken } = useAuth()
 
     async function manejarRegistro() {
+        setError(null)
+        setIdError(null)
+        setAviso("")
         const listaAviso: string[] = []
 
         if (!nombre) { listaAviso.push("Nombre")}

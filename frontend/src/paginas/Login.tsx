@@ -17,6 +17,10 @@ function Login(){
     const { guardarToken } = useAuth()
 
     async function manejarLogin() {
+        setError(null)
+        setIdError(null)
+        setAviso("")
+        
         const listaAviso: string[] = []
 
         if (!correo) { listaAviso.push("Correo")}
