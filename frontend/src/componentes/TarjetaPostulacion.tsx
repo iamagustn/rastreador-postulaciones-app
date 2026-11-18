@@ -23,17 +23,9 @@ function TarjetaPostulacion({ postulacion }: Props) {
     <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
       <h3 className={`${TEXTO_PRINCIPAL}`}>{postulacion.puesto}</h3>
 
-      {postulacion.sueldo_centavos ? (
-        <p className={`${TEXTO_SECUNDARIO}`}>
-          ${(postulacion.sueldo_centavos / 100.0).toLocaleString("es-MX")}
-        </p>
-      ) : (
-        <p className={`${TEXTO_SECUNDARIO}`}>
-          No hay sueldo registrado para esta postulación
-        </p>
-      )}
+      <p className="text-base text-texto-suave">{postulacion.empresa.nombre_empresa}</p>
 
-      <p className={`${TEXTO_PRINCIPAL}`}>Empresa: {postulacion.empresa.nombre_empresa}</p>
+      {postulacion.sueldo_centavos && (<p className={`${TEXTO_SECUNDARIO}`}>${(postulacion.sueldo_centavos / 100.0).toLocaleString("es-MX")}</p>)}
 
       <div>
         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${claseColorEstado}`}>
@@ -41,11 +33,11 @@ function TarjetaPostulacion({ postulacion }: Props) {
         </span>
       </div>
 
-      {postulacion.portal ? (<p className={`${TEXTO_SECUNDARIO}`}>Portal: {postulacion.portal.nombre_portal}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el portal para esta postulación</p>)}
+      {postulacion.portal && (<p className={`${TEXTO_SECUNDARIO}`}>{postulacion.portal.nombre_portal}</p>)}
 
-      {postulacion.mercado ? (<p className={`${TEXTO_SECUNDARIO}`}>Tipo de mercado: {postulacion.mercado.nombre}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el tipo de mercado para esta postulación</p>)}
+      {postulacion.mercado && (<p className={`${TEXTO_SECUNDARIO}`}>{postulacion.mercado.nombre}</p>)}
 
-      {postulacion.modalidad ? (<p className={`${TEXTO_SECUNDARIO}`}>Tipo de modalidad: {postulacion.modalidad.nombre}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el tipo de modalidad para esta postulación</p>)}
+      {postulacion.modalidad && (<p className={`${TEXTO_SECUNDARIO}`}>{postulacion.modalidad.nombre}</p>)}
     </div>
   );
 }
