@@ -16,8 +16,8 @@ const TEXTO_PRINCIPAL = "text-lg font-bold"
 const TEXTO_SECUNDARIO = "text-sm text-texto-suave"
 
 function TarjetaPostulacion({ postulacion }: Props) {
-  const nombreEstadoNormalizado = postulacion.estado.nombre_estado.toLowerCase().trim();
-  const claseColorEstado = ESTILOS_ESTADO[nombreEstadoNormalizado] ?? ESTILO_POR_DEFECTO;
+  const nombreEstado = postulacion.estado.nombre_estado;
+  const claseColorEstado = ESTILOS_ESTADO[nombreEstado] ?? ESTILO_POR_DEFECTO;
 
   return (
     <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
