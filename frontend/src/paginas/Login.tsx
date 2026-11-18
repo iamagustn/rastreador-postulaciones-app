@@ -50,29 +50,39 @@ function Login(){
     }
 
     return (
-        <div>
-            <input 
-                type="text"
-                value={correo}
-                onChange={evento => setCorreo(evento.target.value)}
-                placeholder="usuario@example.com"/>
+        <div className="min-h-screen flex items-center justify-center bg-fondo p-4">
+            <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
+                <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
 
-            <input 
-                type="password"
-                value={contrasena}
-                onChange={evento => setContrasena(evento.target.value)}
-                placeholder="Contraseña"/>
+                <input
+                    className="w-full p-2 border border-borde rounded"
+                    type="text"
+                    value={correo}
+                    onChange={evento => setCorreo(evento.target.value)}
+                    placeholder="usuario@example.com"/>
 
-            {aviso && <p>{aviso}</p>}
-            {cargando && <p>Espera un momento...</p>}
-            {error && <MensajeError error={error} idError={idError}/>}
+                <input 
+                    className="w-full p-2 border border-borde rounded"
+                    type="password"
+                    value={contrasena}
+                    onChange={evento => setContrasena(evento.target.value)}
+                    placeholder="Contraseña"/>
 
-            <button onClick={manejarLogin}>Iniciar sesión</button>
-            <Link to="/registro">¿No tienes cuenta? Regístrate</Link>
-            
+                {aviso && <p>{aviso}</p>}
+                {cargando && <p>Espera un momento...</p>}
+                {error && <MensajeError error={error} idError={idError}/>}
+
+                <button 
+                    onClick={manejarLogin}
+                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">Iniciar sesión</button>
+
+                <Link 
+                    to="/registro"
+                    className="text-marino text-sm block">¿No tienes cuenta? Regístrate</Link>
+
+            </div>            
         </div>
     )
-
 }
 
 export default Login;
