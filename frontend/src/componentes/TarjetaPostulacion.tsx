@@ -1,22 +1,53 @@
 import type { PostulacionSalida } from "../tipos/api";
 
 interface Props {
-    postulacion: PostulacionSalida;
+  postulacion: PostulacionSalida;
 }
 
-function TarjetaPostulacion({ postulacion }: Props){
+const ESTILOS_ESTADO: Record<string, string> = {
+  rechazado: "bg-red-100 text-red-800 border border-red-200",
+  oferta: "bg-green-100 text-green-800 border border-green-200",
+  entrevista: "bg-amber-100 text-amber-800 border border-amber-200",
+  postulado: "bg-gray-100 text-gray-800 border border-gray-200",
+};
 
-    return (
-        <div>
-            <h3>{postulacion.puesto}</h3>
-            {postulacion.sueldo_centavos ? <p>{postulacion.sueldo_centavos / 100.0}</p>: <p>No hay sueldo registrado para esta postulación</p>}
-            <p>Empresa: {postulacion.empresa.nombre_empresa}</p>
-            <p>Estado de la postulación: {postulacion.estado.nombre_estado}</p>
-            {postulacion.portal ? <p>Portal: {postulacion.portal.nombre_portal}</p> : <p>No se registro el portal para esta postulación</p>}
-            {postulacion.mercado ? <p>Tipo de mercado: {postulacion.mercado.nombre}</p> : <p>No se registro el tipo de mercado para esta postulación</p>}
-            {postulacion.modalidad ? <p>Tipo de modalidad: {postulacion.modalidad.nombre}</p> : <p>No se registro el tipo de modalidad para esta postulación</p>}
-        </div>
-    )
+const ESTILO_POR_DEFECTO = "bg-slate-100 text-slate-700 border border-slate-200";
+const TEXTO_PRINCIPAL = "text-lg font-bold"
+const TEXTO_SECUNDARIO = "text-sm text-texto-suave"
+
+function TarjetaPostulacion({ postulacion }: Props) {
+  const nombreEstadoNormalizado = postulacion.estado.nombre_estado.toLowerCase().trim();
+  const claseColorEstado = ESTILOS_ESTADO[nombreEstadoNormalizado] ?? ESTILO_POR_DEFECTO;
+
+  return (
+    <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
+      <h3 className={`${TEXTO_PRINCIPAL}`}>{postulacion.puesto}</h3>
+
+      {postulacion.sueldo_centavos ? (
+        <p className={`${TEXTO_SECUNDARIO}`}>
+          ${(postulacion.sueldo_centavos / 100.0).toLocaleString("es-MX")}
+        </p>
+      ) : (
+        <p className={`${TEXTO_SECUNDARIO}`}>
+          No hay sueldo registrado para esta postulación
+        </p>
+      )}
+
+      <p className={`${TEXTO_PRINCIPAL}`}>Empresa: {postulacion.empresa.nombre_empresa}</p>
+
+      <div>
+        <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium ${claseColorEstado}`}>
+          {postulacion.estado.nombre_estado}
+        </span>
+      </div>
+
+      {postulacion.portal ? (<p className={`${TEXTO_SECUNDARIO}`}>Portal: {postulacion.portal.nombre_portal}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el portal para esta postulación</p>)}
+
+      {postulacion.mercado ? (<p className={`${TEXTO_SECUNDARIO}`}>Tipo de mercado: {postulacion.mercado.nombre}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el tipo de mercado para esta postulación</p>)}
+
+      {postulacion.modalidad ? (<p className={`${TEXTO_SECUNDARIO}`}>Tipo de modalidad: {postulacion.modalidad.nombre}</p>) : (<p className={`${TEXTO_SECUNDARIO}`}>No se registró el tipo de modalidad para esta postulación</p>)}
+    </div>
+  );
 }
 
 export default TarjetaPostulacion;
