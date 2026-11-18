@@ -191,9 +191,9 @@ function NuevaPostulacion({ subirContador }: Props) {
                     <div>
                         <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
                         <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-                            <option value="">Sin mercado</option>
+                            <option value="" className="capitalize">Sin mercado</option>
                             {mercados.map(mercado => (
-                                <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
+                                <option key={mercado.id} value={mercado.id} className="capitalize">{mercado.nombre}</option>
                             ))}
                         </select>
                     </div>
@@ -202,9 +202,9 @@ function NuevaPostulacion({ subirContador }: Props) {
                     <div>
                         <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
                         <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-                            <option value="">Sin modalidad</option>
+                            <option value="" className="capitalize">Sin modalidad</option>
                             {modalidades.map(modalidad => (
-                                <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
+                                <option key={modalidad.id} value={modalidad.id} className="capitalize">{modalidad.nombre}</option>
                             ))}
                         </select>
                     </div>
