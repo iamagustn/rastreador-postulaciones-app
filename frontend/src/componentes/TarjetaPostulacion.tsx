@@ -21,7 +21,7 @@ function TarjetaPostulacion({ postulacion }: Props) {
 
   return (
     <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
-      <h3 className={TEXTO_PRINCIPAL}>{postulacion.puesto}</h3>
+      <h3 className={`capitalize ${TEXTO_PRINCIPAL}`}>{postulacion.puesto}</h3>
 
       <p className="text-base text-texto-suave capitalize">{postulacion.empresa.nombre_empresa}</p>
 
