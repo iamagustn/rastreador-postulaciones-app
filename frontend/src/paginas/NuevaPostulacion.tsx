@@ -141,89 +141,92 @@ function NuevaPostulacion({ subirContador }: Props) {
         <div className="flex items-center justify-center p-4 mt-18">
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-xl space-y-4">
                 <h1 className="text-2xl font-bold mb-4 text-center">Nueva Postulación</h1>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* PUESTO */}
+                    <div className="md:col-span-2">
+                        <label className="block text-sm font-medium mb-1">Puesto</label>
+                        <input
+                            className="w-full p-2 border border-borde rounded"
+                            type="text"
+                            value={puesto}
+                            onChange={evento => setPuesto(evento.target.value)}
+                            placeholder="Nombre del puesto de la vacante" />
+                    </div>
 
-                {/* PUESTO */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Puesto</label>
-                    <input
-                        className="w-full p-2 border border-borde rounded"
-                        type="text"
-                        value={puesto}
-                        onChange={evento => setPuesto(evento.target.value)}
-                        placeholder="Nombre del puesto de la vacante" />
-                </div>
+                    {/* SUELDO */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Sueldo <span className="text-texto-suave">(Opcional)</span></label>
+                        <input
+                            className="w-full p-2 border border-borde rounded"
+                            type="number"
+                            value={sueldo}
+                            onChange={evento => setSueldo(evento.target.value)}
+                            placeholder="Sueldo de la vacante" />
+                    </div>
 
-                {/* SUELDO */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Sueldo <span className="text-texto-suave">(Opcional)</span></label>
-                    <input
-                        className="w-full p-2 border border-borde rounded"
-                        type="number"
-                        value={sueldo}
-                        onChange={evento => setSueldo(evento.target.value)}
-                        placeholder="Sueldo de la vacante" />
-                </div>
+                    {/* EMPRESA */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Empresa</label>
+                        <input
+                            className="w-full p-2 border border-borde rounded"
+                            type="text"
+                            value={empresa}
+                            onChange={evento => setEmpresa(evento.target.value)}
+                            placeholder="Empresa que publicó la vacante" />
+                    </div>
 
-                {/* EMPRESA */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Empresa</label>
-                    <input
-                        className="w-full p-2 border border-borde rounded"
-                        type="text"
-                        value={empresa}
-                        onChange={evento => setEmpresa(evento.target.value)}
-                        placeholder="Empresa que publicó la vacante" />
-                </div>
+                    {/* PORTAL */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Portal <span className="text-texto-suave">(Opcional)</span></label>
+                        <input
+                            className="w-full p-2 border border-borde rounded"
+                            type="text"
+                            value={portal}
+                            onChange={evento => setPortal(evento.target.value)}
+                            placeholder="Portal donde salió la vacante" />
+                    </div>
 
-                {/* PORTAL */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Portal <span className="text-texto-suave">(Opcional)</span></label>
-                    <input
-                        className="w-full p-2 border border-borde rounded"
-                        type="text"
-                        value={portal}
-                        onChange={evento => setPortal(evento.target.value)}
-                        placeholder="Portal donde salió la vacante" />
-                </div>
+                    {/* LISTA DE MERCADOS */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
+                        <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+                            <option value="">Sin mercado</option>
+                            {mercados.map(mercado => (
+                                <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
 
-                {/* LISTA DE MERCADOS */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
-                    <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-                        <option value="">Sin mercado</option>
-                        {mercados.map(mercado => (
-                            <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
-                        ))}
-                    </select>
-                </div>
+                    {/* LISTA DE MODALIDADES */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
+                        <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+                            <option value="">Sin modalidad</option>
+                            {modalidades.map(modalidad => (
+                                <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
 
-                {/* LISTA DE MODALIDADES */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
-                    <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-                        <option value="">Sin modalidad</option>
-                        {modalidades.map(modalidad => (
-                            <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
-                        ))}
-                    </select>
-                </div>
+                    {/* FECHA DE POSTULACION */}
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Fecha de postulación</label>
+                        <input
+                            className="w-full p-2 border border-borde rounded"
+                            type="date"
+                            value={fechaPostulacion}
+                            onChange={evento => setFechaPostulacion(evento.target.value)} />
+                    </div>
 
-                {/* FECHA DE POSTULACION */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">Fecha</label>
-                    <input
-                        className="w-full p-2 border border-borde rounded"
-                        type="date"
-                        value={fechaPostulacion}
-                        onChange={evento => setFechaPostulacion(evento.target.value)} />
                 </div>
 
                 {/* MENSAJES */}
-                {aviso && <p className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">{aviso}</p>}
+                {aviso && <p className="inline-block px-2.5 py-1 rounded text-sm p-3 font-medium bg-amber-100 text-amber-800 border border-amber-200">{aviso}</p>}
                 {cargando && <p>Espera un momento...</p>}
                 {error && <MensajeError error={error} idError={idError}/>}
-                {exito && <p className="inline-block px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">{exito}</p>}
-
+                {exito && <p className="inline-block px-2.5 py-1 rounded text-sm p-3 font-medium bg-green-100 text-green-800 border border-green-200">{exito}</p>}
+           
                 <button onClick={manejarRegistro} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
                     {cargando ? "Registrando..." : "Registrar postulación"}
                 </button>
