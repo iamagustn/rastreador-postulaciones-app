@@ -4,7 +4,7 @@ import { type EstadoSalida, type HistorialSalida, type PostulacionSalida } from 
 import { useAuth } from "../contextos/AuthContexto";
 import { borrarPostulacion, cambiarEstado, ErrorApi, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
-import MensajeError from "../componentes/MensajeError";
+import Mensaje from "../componentes/Mensaje";
 
 function DetallePostulacion() {
 
@@ -117,7 +117,7 @@ function DetallePostulacion() {
     }
 
     if (error && !postulacion) {
-        return <MensajeError error={error} idError={idError}/>
+        return <Mensaje tipo="error" texto={error} idError={idError}/>
     }
 
     if (!postulacion) {
@@ -150,8 +150,8 @@ function DetallePostulacion() {
             </select>
 
             {cargandoCambio && <p>Cargando el cambio...</p>}
-            {error && <MensajeError error={error} idError={idError}/>}
-            {exito && <p>{exito}</p>}
+            {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+            {exito && <Mensaje tipo="exito" texto={exito}/>}
 
             <button onClick={manejarCambioEstado} disabled={cargandoCambio}>
                 {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ErrorApi, iniciarSesion } from "../servicios/api";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contextos/AuthContexto";
-import MensajeError from "../componentes/MensajeError";
+import Mensaje from "../componentes/Mensaje";
 
 function Login(){
 
@@ -72,9 +72,9 @@ function Login(){
                     onChange={evento => setContrasena(evento.target.value)}
                     placeholder="Contraseña"/>
 
-                {aviso && <p>{aviso}</p>}
+                {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
                 {cargando && <p>Espera un momento...</p>}
-                {error && <MensajeError error={error} idError={idError}/>}
+                {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
                 <button 
                     onClick={manejarLogin}

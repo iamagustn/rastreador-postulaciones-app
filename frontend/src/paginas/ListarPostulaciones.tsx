@@ -4,7 +4,7 @@ import { ErrorApi, listarPostulaciones } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
 import { Link } from "react-router-dom";
-import MensajeError from "../componentes/MensajeError";
+import Mensaje from "../componentes/Mensaje";
 
 interface Props {
     contador: number;
@@ -52,7 +52,7 @@ function ListarPostulaciones({ contador }: Props) {
     }
 
     if (error) {
-        return <MensajeError error={error} idError={idError}/>
+        return <Mensaje tipo="error" texto={error} idError={idError}/>
     }
 
     if (postulaciones.length === 0) {

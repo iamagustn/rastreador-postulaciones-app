@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { crearPostulacion, ErrorApi, listarMercados, listarModalidades } from "../servicios/api"
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api"
 import { useAuth } from "../contextos/AuthContexto";
-import MensajeError from "../componentes/MensajeError";
+import Mensaje from "../componentes/Mensaje";
 
 interface Props {
     subirContador: () => void;
@@ -73,7 +73,7 @@ function NuevaPostulacion({ subirContador }: Props) {
     }
 
     if (errorCatalogos) {
-        return <MensajeError error={errorCatalogos} idError={idError}/>
+        return <Mensaje tipo="error" texto={errorCatalogos} idError={idError}/>
     }
 
     async function manejarRegistro() {
@@ -222,10 +222,10 @@ function NuevaPostulacion({ subirContador }: Props) {
                 </div>
 
                 {/* MENSAJES */}
-                {aviso && <p className="inline-block px-2.5 py-1 rounded text-sm p-3 font-medium bg-amber-100 text-amber-800 border border-amber-200">{aviso}</p>}
+                {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
                 {cargando && <p>Espera un momento...</p>}
-                {error && <MensajeError error={error} idError={idError}/>}
-                {exito && <p className="inline-block px-2.5 py-1 rounded text-sm p-3 font-medium bg-green-100 text-green-800 border border-green-200">{exito}</p>}
+                {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+                {exito && <Mensaje tipo="exito" texto={exito}/>}
            
                 <button onClick={manejarRegistro} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
                     {cargando ? "Registrando..." : "Registrar postulación"}

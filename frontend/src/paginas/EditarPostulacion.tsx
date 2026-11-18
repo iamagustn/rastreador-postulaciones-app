@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api";
 import { editarPostulacion, ErrorApi, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
 import { useAuth } from "../contextos/AuthContexto";
-import MensajeError from "../componentes/MensajeError";
+import Mensaje from "../componentes/Mensaje";
 
 function EditarPostulacion() {
   const { id } = useParams()
@@ -82,7 +82,7 @@ function EditarPostulacion() {
   }
 
   if (error && !puesto) {
-    return <MensajeError error={error} idError={idError}/>
+    return <Mensaje tipo="error" texto={error} idError={idError}/>
   }
 
   async function manejarEdicion() {
@@ -162,10 +162,10 @@ function EditarPostulacion() {
         value={fechaPostulacion} 
         onChange={evento => setFechaPostulacion(evento.target.value)} />
       
-      {aviso && <p>{aviso}</p>}
+      {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
       {cargando && <p>Espera un momento...</p>}
-      {error && <MensajeError error={error} idError={idError}/>}
-      {exito && <p>{exito}</p>}
+      {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+      {exito && <Mensaje tipo="exito" texto={exito}/>}
       
       <button onClick={manejarEdicion} disabled={cargando}>
         {cargando ? "Guardando los cambios..." : "Editar postulación"}
