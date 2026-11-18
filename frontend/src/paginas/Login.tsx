@@ -78,7 +78,7 @@ function Login(){
 
                 <Link 
                     to="/registro"
-                    className="text-marino text-sm block">¿No tienes cuenta? Regístrate</Link>
+                    className="text-marino text-sm block text-center">¿No tienes cuenta? Regístrate</Link>
 
             </div>            
         </div>

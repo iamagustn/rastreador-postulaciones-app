@@ -106,7 +106,7 @@ function Registro() {
 
                 <Link 
                     to="/login"
-                    className="text-marino text-sm block">¿Ya tienes cuenta? Inicia sesión</Link>
+                    className="text-marino text-sm block text-center">¿Ya tienes cuenta? Inicia sesión</Link>
 
             </div>
         </div>
