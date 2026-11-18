@@ -64,7 +64,7 @@ function Registro() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-fondo p-4">
+        <div className="flex items-center justify-center p-4 mt-18">
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
                 <h1 className="text-2xl font-bold text-center">Registrarse</h1>
 
