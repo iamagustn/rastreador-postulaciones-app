@@ -61,9 +61,12 @@ function ListarPostulaciones({ contador }: Props) {
 
     return (
         <div>
+            <h1 className="text-2xl font-bold mb-4">Mis Postulaciones</h1>
             {postulaciones.map(postulacion => (
-                <Link key={postulacion.id} to={`/postulaciones/${postulacion.id}`}>
-                    <TarjetaPostulacion postulacion={postulacion} />
+                <Link 
+                    key={postulacion.id} to={`/postulaciones/${postulacion.id}`}
+                    className="hover:shadow-md transition space-y-4 block">
+                        <TarjetaPostulacion postulacion={postulacion} />
                 </Link>
             ))}
         </div>
