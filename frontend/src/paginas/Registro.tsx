@@ -64,38 +64,51 @@ function Registro() {
     }
 
     return (
-        <div>
-            <input 
-                type="text"
-                value={nombre}
-                onChange={evento => setNombre(evento.target.value)}
-                placeholder="Tu nombre"/>
+        <div className="min-h-screen flex items-center justify-center bg-fondo p-4">
+            <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
+                <h1 className="text-2xl font-bold">Registrarse</h1>
 
-            <input 
-                type="text"
-                value={apellidos}
-                onChange={evento => setApellidos(evento.target.value)}
-                placeholder="Tus apellidos"/>
+                <input 
+                    className="w-full p-2 border border-borde rounded"
+                    type="text"
+                    value={nombre}
+                    onChange={evento => setNombre(evento.target.value)}
+                    placeholder="Tu nombre"/>
 
-            <input 
-                type="text"
-                value={correo}
-                onChange={evento => setCorreo(evento.target.value)}
-                placeholder="usuario@example.com"/>
+                <input 
+                    className="w-full p-2 border border-borde rounded"
+                    type="text"
+                    value={apellidos}
+                    onChange={evento => setApellidos(evento.target.value)}
+                    placeholder="Tus apellidos"/>
 
-            <input 
-                type="password"
-                value={contrasena}
-                onChange={evento => setContrasena(evento.target.value)}
-                placeholder="Contraseña"/>
+                <input 
+                    className="w-full p-2 border border-borde rounded"
+                    type="text"
+                    value={correo}
+                    onChange={evento => setCorreo(evento.target.value)}
+                    placeholder="usuario@example.com"/>
 
-            {aviso && <p>{aviso}</p>}
-            {cargando && <p>Espera un momento...</p>}
-            {error && <MensajeError error={error} idError={idError}/>}
+                <input 
+                    className="w-full p-2 border border-borde rounded"
+                    type="password"
+                    value={contrasena}
+                    onChange={evento => setContrasena(evento.target.value)}
+                    placeholder="Contraseña"/>
 
-            <button onClick={manejarRegistro}>Registrarse</button>
-            <Link to="/login">¿Ya tienes cuenta? Inicia sesión</Link>
-            
+                {aviso && <p>{aviso}</p>}
+                {cargando && <p>Espera un momento...</p>}
+                {error && <MensajeError error={error} idError={idError}/>}
+
+                <button 
+                    onClick={manejarRegistro}
+                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">Registrarse</button>
+
+                <Link 
+                    to="/login"
+                    className="text-marino text-sm block">¿Ya tienes cuenta? Inicia sesión</Link>
+
+            </div>
         </div>
     )
 
