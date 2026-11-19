@@ -76,8 +76,34 @@ function EditarPostulacion() {
   const tokenValido: string = token
 
   if (!id || Number.isNaN(idValido)) {
-    return <p>El ID es invalido</p>
-  }
+      return (
+          <div className="bg-superficie p-12 rounded-lg border border-borde space-y-4 mt-18 text-center">
+              <svg
+                  xmlns="http://w3.org"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-12 h-12 mx-auto text-texto-suave"
+              >
+                  <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+                  />
+              </svg>
+              <h2 className="text-lg font-bold">El ID es inválido</h2>
+              <p className="text-texto-suave">El identificador de la postulación no tiene un formato válido</p>
+              <Link
+                  to="/postulaciones"
+                  className="px-4 py-2 rounded border inline-block bg-marino text-white hover:bg-marino-oscuro hover:text-white transition"
+              >
+                  Volver a mis postulaciones
+              </Link>
+          </div>
+      )
+    }
+
 
   if (cargandoDatos) {
     return <EsqueletoFormulario />
