@@ -57,7 +57,20 @@ function ListarPostulaciones({ contador }: Props) {
     }
 
     if (postulaciones.length === 0) {
-        return <p>No tienes postulaciones registradas</p>
+        return (
+            <div className="bg-superficie p-12 rounded-lg border border-borde space-y-4 mt-18 text-center">
+                <h2 className="text-lg font-bold">Aún no has registrado ninguna postulación</h2>
+                <p className="text-texto-suave">Empieza a llevar el control de tus procesos</p>
+                <Link 
+                    to="/postulaciones/nueva" 
+                    className="px-4 py-2 rounded border inline-block bg-marino text-white hover:bg-marino-oscuro hover:text-white transition">
+                    Registrar mi primer postulación
+                </Link>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-12 h-12 mx-auto text-texto-suave">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                </svg>
+            </div>
+        )
     }
 
     return (
