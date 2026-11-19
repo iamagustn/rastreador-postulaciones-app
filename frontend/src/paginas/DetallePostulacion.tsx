@@ -180,7 +180,6 @@ function DetallePostulacion() {
                     ))}
                 </select>
 
-                {cargandoCambio && <p>Cargando el cambio...</p>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
                 {exito && <Mensaje tipo="exito" texto={exito}/>}
 

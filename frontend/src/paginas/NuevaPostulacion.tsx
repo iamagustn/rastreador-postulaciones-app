@@ -224,7 +224,6 @@ function NuevaPostulacion({ subirContador }: Props) {
 
                 {/* MENSAJES */}
                 {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-                {cargando && <p>Espera un momento...</p>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
                 {exito && <Mensaje tipo="exito" texto={exito}/>}
            
