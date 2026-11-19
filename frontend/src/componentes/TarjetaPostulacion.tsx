@@ -4,7 +4,7 @@ interface Props {
   postulacion: PostulacionSalida;
 }
 
-const ESTILOS_ESTADO: Record<string, string> = {
+export const ESTILOS_ESTADO: Record<string, string> = {
   rechazado: "bg-red-100 text-red-800 border border-red-200",
   oferta: "bg-green-100 text-green-800 border border-green-200",
   entrevista: "bg-amber-100 text-amber-800 border border-amber-200",
