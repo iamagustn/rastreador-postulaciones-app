@@ -5,7 +5,7 @@ import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
 import { Link } from "react-router-dom";
 import Mensaje from "../componentes/Mensaje";
-import EsqueletoLista from "../componentes/EsqueletoLista";
+import EsqueletoLista from "../componentes/EsqueletoTargetas";
 
 interface Props {
     contador: number;
