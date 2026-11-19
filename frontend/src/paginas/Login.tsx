@@ -60,7 +60,7 @@ function Login(){
             setTardando(false)
             return
         }
-        const temporizador = setTimeout(() => setTardando(true), 3000);
+        const temporizador = setTimeout(() => setTardando(true), 5000);
         return () => clearTimeout(temporizador)
     }, [cargando])
 

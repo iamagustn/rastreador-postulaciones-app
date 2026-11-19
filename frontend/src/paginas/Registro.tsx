@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ErrorApi, iniciarSesion, registrarUsuario } from "../servicios/api"
 import { Link } from "react-router-dom";
 import { useAuth } from "../contextos/AuthContexto";
@@ -10,6 +10,8 @@ function Registro() {
     const [error, setError] = useState<string | null>(null)
     const [idError, setIdError] = useState<string | null>(null)
     const [aviso, setAviso] = useState("")
+
+    const [tardando, setTardando] = useState(false)
 
     const [nombre, setNombre] = useState("")
     const [apellidos, setApellidos] = useState("")
@@ -65,6 +67,15 @@ function Registro() {
         }
     }
 
+    useEffect(() => {
+        if (!cargando) {
+            setTardando(false)
+            return
+        }
+        const temporizador = setTimeout(() => setTardando(true), 5000);
+        return () => clearTimeout(temporizador)
+    }, [cargando])
+
     return (
         <div className="flex items-center justify-center p-4 mt-18">
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
@@ -98,6 +109,7 @@ function Registro() {
                     onChange={evento => setContrasena(evento.target.value)}
                     placeholder="Contraseña"/>
 
+                {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
                 {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
