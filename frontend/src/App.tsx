@@ -8,6 +8,7 @@ import RutaProtegida from "./componentes/RutaProtegida"
 import { useAuth } from "./contextos/AuthContexto"
 import DetallePostulacion from "./paginas/DetallePostulacion"
 import EditarPostulacion from "./paginas/EditarPostulacion"
+import PantallaVacia from "./componentes/PantallaVacia"
 
 function App() {
 
@@ -36,7 +37,6 @@ function App() {
             className="inline-flex items-center gap-1"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
@@ -60,7 +60,6 @@ function App() {
             className="inline-flex items-center gap-1"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
@@ -112,30 +111,15 @@ function App() {
         <Route
           path="*"
           element={
-            <div className="bg-superficie p-12 rounded-lg border border-borde space-y-4 mt-18 text-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-12 h-12 mx-auto text-texto-suave"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-                />
-              </svg>
-              <h2 className="text-lg font-bold">La página no existe</h2>
-              <p className="text-texto-suave">La ruta que buscas no está disponible</p>
-              <Link
-                to="/postulaciones"
-                className="px-4 py-2 rounded border inline-block bg-marino text-white hover:bg-marino-oscuro hover:text-white transition"
-              >
-                Volver a mis postulaciones
-              </Link>
-            </div>
+            <PantallaVacia 
+              titulo=""
+              descripcion="La ruta que buscas no esta disponible"
+              icono={
+                <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 mx-auto text-texto-suave">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+                </svg>
+              }
+            />
           }
         />
 
