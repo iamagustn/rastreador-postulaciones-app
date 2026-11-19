@@ -5,6 +5,7 @@ import { editarPostulacion, ErrorApi, listarMercados, listarModalidades, obtener
 import { useAuth } from "../contextos/AuthContexto";
 import Mensaje from "../componentes/Mensaje";
 import EsqueletoFormulario from "../componentes/EsqueletoFormulario";
+import { Link } from "react-router-dom";
 
 function EditarPostulacion() {
   const { id } = useParams()
@@ -196,6 +197,9 @@ function EditarPostulacion() {
         <button onClick={manejarEdicion} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
           {cargando ? "Guardando los cambios..." : "Editar postulación"}
         </button>
+        <Link to={`/postulaciones/${idValido}`} className="text-marino text-sm block text-center">
+          Cancelar
+        </Link>
       </div>
     </div>
   )
