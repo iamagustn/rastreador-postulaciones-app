@@ -112,7 +112,7 @@ function App() {
           path="*"
           element={
             <PantallaVacia 
-              titulo=""
+              titulo="La pagina no existe"
               descripcion="La ruta que buscas no esta disponible"
               icono={
                 <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 mx-auto text-texto-suave">
