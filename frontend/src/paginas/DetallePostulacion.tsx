@@ -6,7 +6,7 @@ import { borrarPostulacion, cambiarEstado, ErrorApi, listarEstados, obtenerHisto
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import Mensaje from "../componentes/Mensaje";
 import { ESTILOS_ESTADO, ESTILO_POR_DEFECTO } from "../componentes/TarjetaPostulacion";
-import EsqueletoLista from "../componentes/EsqueletoTargetas";
+import EsqueletoLista from "../componentes/EsqueletoTarjetas";
 
 function DetallePostulacion() {
 
