@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ErrorApi, iniciarSesion } from "../servicios/api";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contextos/AuthContexto";
@@ -10,6 +10,8 @@ function Login(){
     const [error, setError] = useState<string | null>(null)
     const [idError, setIdError] = useState<string | null>(null)
     const [aviso, setAviso] = useState("")
+
+    const [tardando, setTardando] = useState(false)
 
     const [correo, setCorreo] = useState("")
     const [contrasena, setContrasena] = useState("")
@@ -53,6 +55,15 @@ function Login(){
         }
     }
 
+    useEffect(() => {
+        if (!cargando) {
+            setTardando(false)
+            return
+        }
+        const temporizador = setTimeout(() => setTardando(true), 3000);
+        return () => clearTimeout(temporizador)
+    }, [cargando])
+
     return (
         <div className="flex items-center justify-center p-4 mt-18">
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
@@ -72,6 +83,7 @@ function Login(){
                     onChange={evento => setContrasena(evento.target.value)}
                     placeholder="Contraseña"/>
 
+                {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
                 {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
