@@ -4,6 +4,7 @@ import { type MercadoSalida, type ModalidadSalida } from "../tipos/api";
 import { editarPostulacion, ErrorApi, listarMercados, listarModalidades, obtenerPostulacion } from "../servicios/api";
 import { useAuth } from "../contextos/AuthContexto";
 import Mensaje from "../componentes/Mensaje";
+import EsqueletoFormulario from "../componentes/EsqueletoFormulario";
 
 function EditarPostulacion() {
   const { id } = useParams()
@@ -78,7 +79,7 @@ function EditarPostulacion() {
   }
 
   if (cargandoDatos) {
-    return <p>Cargando...</p>
+    return <EsqueletoFormulario />
   }
 
   if (error && !puesto) {
@@ -131,6 +132,7 @@ function EditarPostulacion() {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-4 text-center">Editar postulación</h1>
       <input 
         type="text" 
         value={puesto} 

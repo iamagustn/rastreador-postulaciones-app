@@ -3,6 +3,7 @@ import { crearPostulacion, ErrorApi, listarMercados, listarModalidades } from ".
 import { type MercadoSalida, type ModalidadSalida } from "../tipos/api"
 import { useAuth } from "../contextos/AuthContexto";
 import Mensaje from "../componentes/Mensaje";
+import EsqueletoFormulario from "../componentes/EsqueletoFormulario";
 
 interface Props {
     subirContador: () => void;
@@ -69,7 +70,7 @@ function NuevaPostulacion({ subirContador }: Props) {
     const tokenValido: string = token
 
     if (cargandoCatalogos) {
-        return <p>Cargando formulario...</p>
+        return <EsqueletoFormulario />
     }
 
     if (errorCatalogos) {
