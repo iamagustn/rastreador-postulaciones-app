@@ -1,6 +1,6 @@
 function EsqueletoFormulario() {
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-xl mx-auto mt-18">
       <div className="animate-pulse bg-superficie rounded-lg p-8 border border-borde">
         
         {/* Título */}
