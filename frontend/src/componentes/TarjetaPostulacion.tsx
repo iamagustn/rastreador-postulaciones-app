@@ -11,7 +11,7 @@ export const ESTILOS_ESTADO: Record<string, string> = {
   postulado: "bg-gray-100 text-gray-800 border border-gray-200",
 };
 
-const ESTILO_POR_DEFECTO = "bg-slate-100 text-slate-700 border border-slate-200";
+export const ESTILO_POR_DEFECTO = "bg-slate-100 text-slate-700 border border-slate-200";
 const TEXTO_PRINCIPAL = "text-lg font-bold"
 const TEXTO_SECUNDARIO = "text-sm text-texto-suave"
 
