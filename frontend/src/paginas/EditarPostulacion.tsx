@@ -131,47 +131,73 @@ function EditarPostulacion() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4 text-center">Editar postulación</h1>
-      <input 
-        type="text" 
-        value={puesto} 
-        onChange={evento => setPuesto(evento.target.value)} 
-        placeholder="Nombre del puesto de la vacante" />
-    
-      <input 
-        type="number" 
-        value={sueldo} 
-        onChange={evento => setSueldo(evento.target.value)} 
-        placeholder="Sueldo de la vacante (opcional)" />
+    <div className="flex items-center justify-center p-4 mt-18">
+      <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-xl space-y-4">
+      
+        <h1 className="text-2xl font-bold mb-4 text-center">Editar postulación</h1>
 
-      <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)}>
-        <option value="">Sin mercado</option>
-        {mercados.map(mercado => (
-          <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
-        ))}
-      </select>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-      <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)}>
-        <option value="">Sin modalidad</option>
-        {modalidades.map(modalidad => (
-          <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
-        ))}
-      </select>
-      
-      <input 
-        type="date" 
-        value={fechaPostulacion} 
-        onChange={evento => setFechaPostulacion(evento.target.value)} />
-      
-      {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-      {cargando && <p>Espera un momento...</p>}
-      {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
-      {exito && <Mensaje tipo="exito" texto={exito}/>}
-      
-      <button onClick={manejarEdicion} disabled={cargando}>
-        {cargando ? "Guardando los cambios..." : "Editar postulación"}
-      </button>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium mb-1">Puesto</label>
+            <input 
+              className="w-full p-2 border border-borde rounded"
+              type="text" 
+              value={puesto} 
+              onChange={evento => setPuesto(evento.target.value)} 
+              placeholder="Nombre del puesto de la vacante" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Sueldo <span className="text-texto-suave">(Opcional)</span></label>
+            <input 
+              className="w-full p-2 border border-borde rounded"
+              type="number" 
+              value={sueldo} 
+              onChange={evento => setSueldo(evento.target.value)} 
+              placeholder="Sueldo de la vacante (opcional)" />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
+            <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+              <option value="">Sin mercado</option>
+              {mercados.map(mercado => (
+                <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
+            <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+              <option value="">Sin modalidad</option>
+              {modalidades.map(modalidad => (
+                <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Fecha de postulación</label>
+            <input 
+              className="w-full p-2 border border-borde rounded"
+              type="date" 
+              value={fechaPostulacion} 
+              onChange={evento => setFechaPostulacion(evento.target.value)} />
+          </div>
+
+        </div>
+
+        {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
+        {cargando && <p>Espera un momento...</p>}
+        {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+        {exito && <Mensaje tipo="exito" texto={exito}/>}
+        
+        <button onClick={manejarEdicion} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
+          {cargando ? "Guardando los cambios..." : "Editar postulación"}
+        </button>
+      </div>
     </div>
   )
 }
