@@ -5,6 +5,7 @@ import { useAuth } from "../contextos/AuthContexto";
 import { borrarPostulacion, cambiarEstado, ErrorApi, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import Mensaje from "../componentes/Mensaje";
+import EsqueletoDetalle from "../componentes/EsqueletoDetalle";
 
 function DetallePostulacion() {
 
@@ -113,7 +114,7 @@ function DetallePostulacion() {
     }
 
     if (cargando && !postulacion) {
-        return <p>Cargando postulacion...</p>
+        return <EsqueletoDetalle />
     }
 
     if (error && !postulacion) {
@@ -128,6 +129,8 @@ function DetallePostulacion() {
         <div>
             <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>
             <button onClick={manejarBorrado}>Borrar postulación</button>
+
+            <h1 className="text-2xl font-bold mb-4">Detalles de la postulación</h1>
 
             <TarjetaPostulacion key={postulacion.id} postulacion={postulacion} />
 
