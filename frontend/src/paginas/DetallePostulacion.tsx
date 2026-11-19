@@ -5,7 +5,8 @@ import { useAuth } from "../contextos/AuthContexto";
 import { borrarPostulacion, cambiarEstado, ErrorApi, listarEstados, obtenerHistorial, obtenerPostulacion } from "../servicios/api";
 import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import Mensaje from "../componentes/Mensaje";
-import EsqueletoDetalle from "../componentes/EsqueletoDetalle";
+import { ESTILOS_ESTADO, ESTILO_POR_DEFECTO } from "../componentes/TarjetaPostulacion";
+import EsqueletoLista from "../componentes/EsqueletoTargetas";
 
 function DetallePostulacion() {
 
@@ -114,7 +115,7 @@ function DetallePostulacion() {
     }
 
     if (cargando && !postulacion) {
-        return <EsqueletoDetalle />
+        return <EsqueletoLista />
     }
 
     if (error && !postulacion) {
@@ -126,40 +127,67 @@ function DetallePostulacion() {
     }
 
     return (
-        <div>
-            <Link to={`/postulaciones/${idValido}/editar`}>Editar postulación</Link>
-            <button onClick={manejarBorrado}>Borrar postulación</button>
-
-            <h1 className="text-2xl font-bold mb-4">Detalles de la postulación</h1>
-
+        <div className="space-y-6">
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-2xl font-bold mb-4">Detalles de la postulación</h1>
+                </div>
+        
+                <div className="flex gap-3">
+                    <Link 
+                        to={`/postulaciones/${idValido}/editar`}
+                        className="px-4 py-2 rounded border border-marino text-marino hover:bg-marino hover:text-white transition">
+                        Editar
+                    </Link>
+                    <button 
+                        onClick={manejarBorrado}
+                        className="px-4 py-2 rounded border border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition">
+                        Borrar
+                    </button>
+                </div>
+            </div>
+        
             <TarjetaPostulacion key={postulacion.id} postulacion={postulacion} />
 
-            {historial.map(entrada => (
-                <p key={entrada.id}>
-                    {entrada.estado.nombre_estado} — {new Date(entrada.fecha).toLocaleString('es-MX', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                    })}
-                </p>
-            ))}
+            {/* Tarjeta historial */}
+            <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
+                <h2 className="text-lg font-bold mb-4">Historial</h2>
 
-            <select value={estado} onChange={evento => setEstado(evento.target.value)}>
-                {estados.map(estado => (
-                    <option key={estado.id} value={estado.nombre_estado}>{estado.nombre_estado}</option>
+                {historial.map(entrada => (
+                    <div key={entrada.id} className="flex justify-between items-center py-2 border-b border-borde last:border-0">
+                        <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium capitalize ${ESTILOS_ESTADO[entrada.estado.nombre_estado] ?? ESTILO_POR_DEFECTO}`}>
+                            {entrada.estado.nombre_estado}
+                        </span>
+                        <span className="text-sm text-texto-suave">
+                            {new Date(entrada.fecha).toLocaleString('es-MX', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            })}
+                        </span>
+                    </div>
                 ))}
-            </select>
+            </div>
 
-            {cargandoCambio && <p>Cargando el cambio...</p>}
-            {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
-            {exito && <Mensaje tipo="exito" texto={exito}/>}
+            <div className="bg-superficie p-4 rounded-lg border border-borde space-y-4">
+                <h2 className="text-lg font-bold mb-4">Actualizar estado</h2>
 
-            <button onClick={manejarCambioEstado} disabled={cargandoCambio}>
-                {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
-            </button>
+                <select value={estado} onChange={evento => setEstado(evento.target.value)} className="w-full p-2 border border-borde rounded">
+                    {estados.map(estado => (
+                        <option key={estado.id} value={estado.nombre_estado}>{estado.nombre_estado}</option>
+                    ))}
+                </select>
 
+                {cargandoCambio && <p>Cargando el cambio...</p>}
+                {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+                {exito && <Mensaje tipo="exito" texto={exito}/>}
+
+                <button onClick={manejarCambioEstado} disabled={cargandoCambio} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
+                    {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
+                </button>
+            </div>
         </div>
     )
 }
