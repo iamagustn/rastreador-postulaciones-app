@@ -5,6 +5,7 @@ import TarjetaPostulacion from "../componentes/TarjetaPostulacion";
 import { useAuth } from "../contextos/AuthContexto";
 import { Link } from "react-router-dom";
 import Mensaje from "../componentes/Mensaje";
+import EsqueletoLista from "../componentes/EsqueletoLista";
 
 interface Props {
     contador: number;
@@ -48,7 +49,7 @@ function ListarPostulaciones({ contador }: Props) {
     if (!token) return null
 
     if (cargando) {
-        return <p>Cargando postulaciones...</p>
+        return <EsqueletoLista />
     }
 
     if (error) {
