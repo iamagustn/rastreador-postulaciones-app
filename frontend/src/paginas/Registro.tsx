@@ -99,12 +99,14 @@ function Registro() {
                     placeholder="Contraseña"/>
 
                 {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-                {cargando && <p>Espera un momento...</p>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
                 <button 
                     onClick={manejarRegistro}
-                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">Registrarse</button>
+                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
+                    disabled={cargando}>
+                        {cargando ? "Registrando..." : "Registrarse"}
+                </button>
 
                 <Link 
                     to="/login"

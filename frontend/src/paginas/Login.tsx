@@ -73,12 +73,14 @@ function Login(){
                     placeholder="Contraseña"/>
 
                 {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-                {cargando && <p>Espera un momento...</p>}
                 {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
                 <button 
                     onClick={manejarLogin}
-                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">Iniciar sesión</button>
+                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
+                    disabled={cargando}>
+                        {cargando ? "Iniciando sesión..." : "Iniciar sesión"}
+                    </button>
 
                 <Link 
                     to="/registro"
