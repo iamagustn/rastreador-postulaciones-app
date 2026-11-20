@@ -99,7 +99,9 @@ function EditarPostulacion() {
     return <Mensaje tipo="error" texto={error} idError={idError}/>
   }
 
-  async function manejarEdicion() {
+  async function manejarEdicion(evento: React.FormEvent) {
+    evento.preventDefault()
+
     setError(null)
     setIdError(null)
     setAviso("")
@@ -149,69 +151,74 @@ function EditarPostulacion() {
       
         <h1 className="text-2xl font-bold mb-4 text-center">Editar postulación</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={manejarEdicion} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium mb-1">Puesto</label>
-            <input 
-              className="w-full p-2 border border-borde rounded"
-              type="text" 
-              value={puesto} 
-              onChange={evento => setPuesto(evento.target.value)} 
-              placeholder="Nombre del puesto de la vacante" />
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-1">Puesto</label>
+              <input 
+                className="w-full p-2 border border-borde rounded"
+                type="text" 
+                value={puesto} 
+                onChange={evento => setPuesto(evento.target.value)} 
+                placeholder="Nombre del puesto de la vacante" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Sueldo <span className="text-texto-suave">(Opcional)</span></label>
+              <input 
+                className="w-full p-2 border border-borde rounded"
+                type="number" 
+                value={sueldo} 
+                onChange={evento => setSueldo(evento.target.value)} 
+                placeholder="Sueldo de la vacante (opcional)" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
+              <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+                <option value="">Sin mercado</option>
+                {mercados.map(mercado => (
+                  <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
+                ))}
+              </select>
+            </div>
+              
+            <div>
+              <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
+              <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
+                <option value="">Sin modalidad</option>
+                {modalidades.map(modalidad => (
+                  <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
+                ))}
+              </select>
+            </div>
+              
+            <div>
+              <label className="block text-sm font-medium mb-1">Fecha de postulación</label>
+              <input 
+                className="w-full p-2 border border-borde rounded"
+                type="date" 
+                value={fechaPostulacion} 
+                onChange={evento => setFechaPostulacion(evento.target.value)} />
+            </div>
+
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Sueldo <span className="text-texto-suave">(Opcional)</span></label>
-            <input 
-              className="w-full p-2 border border-borde rounded"
-              type="number" 
-              value={sueldo} 
-              onChange={evento => setSueldo(evento.target.value)} 
-              placeholder="Sueldo de la vacante (opcional)" />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Mercado <span className="text-texto-suave">(Opcional)</span></label>
-            <select value={mercadoId} onChange={evento => setMercadoId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-              <option value="">Sin mercado</option>
-              {mercados.map(mercado => (
-                <option key={mercado.id} value={mercado.id}>{mercado.nombre}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Modalidad <span className="text-texto-suave">(Opcional)</span></label>
-            <select value={modalidadId} onChange={evento => setModalidadId(evento.target.value)} className="w-full p-2 border border-borde rounded">
-              <option value="">Sin modalidad</option>
-              {modalidades.map(modalidad => (
-                <option key={modalidad.id} value={modalidad.id}>{modalidad.nombre}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-1">Fecha de postulación</label>
-            <input 
-              className="w-full p-2 border border-borde rounded"
-              type="date" 
-              value={fechaPostulacion} 
-              onChange={evento => setFechaPostulacion(evento.target.value)} />
-          </div>
+          {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
+          {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+          {exito && <Mensaje tipo="exito" texto={exito}/>}
+              
+          <button type="submit" disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
+            {cargando ? "Guardando los cambios..." : "Editar postulación"}
+          </button>
 
-        </div>
+        </form>
 
-        {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-        {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
-        {exito && <Mensaje tipo="exito" texto={exito}/>}
-        
-        <button onClick={manejarEdicion} disabled={cargando} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
-          {cargando ? "Guardando los cambios..." : "Editar postulación"}
-        </button>
         <Link to={`/postulaciones/${idValido}`} className="text-marino text-sm block text-center">
           Cancelar
         </Link>
+
       </div>
     </div>
   )

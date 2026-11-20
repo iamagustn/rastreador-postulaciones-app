@@ -18,7 +18,9 @@ function Login(){
 
     const { guardarToken } = useAuth()
 
-    async function manejarLogin() {
+    async function manejarLogin(evento: React.FormEvent) {
+        evento.preventDefault()
+
         setError(null)
         setIdError(null)
         setAviso("")
@@ -69,30 +71,32 @@ function Login(){
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
                 <h1 className="text-2xl font-bold text-center">Iniciar Sesión</h1>
 
-                <input
-                    className="w-full p-2 border border-borde rounded"
-                    type="text"
-                    value={correo}
-                    onChange={evento => setCorreo(evento.target.value)}
-                    placeholder="usuario@example.com"/>
+                <form onSubmit={manejarLogin} className="space-y-4">
+                    <input
+                        className="w-full p-2 border border-borde rounded"
+                        type="text"
+                        value={correo}
+                        onChange={evento => setCorreo(evento.target.value)}
+                        placeholder="usuario@example.com"/>
 
-                <input 
-                    className="w-full p-2 border border-borde rounded"
-                    type="password"
-                    value={contrasena}
-                    onChange={evento => setContrasena(evento.target.value)}
-                    placeholder="Contraseña"/>
+                    <input 
+                        className="w-full p-2 border border-borde rounded"
+                        type="password"
+                        value={contrasena}
+                        onChange={evento => setContrasena(evento.target.value)}
+                        placeholder="Contraseña"/>
 
-                {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
-                {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-                {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+                    {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
+                    {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
+                    {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
-                <button 
-                    onClick={manejarLogin}
-                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
-                    disabled={cargando}>
-                        {cargando ? "Iniciando sesión..." : "Iniciar sesión"}
+                    <button 
+                        type="submit"
+                        className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
+                        disabled={cargando}>
+                            {cargando ? "Iniciando sesión..." : "Iniciar sesión"}
                     </button>
+                </form>
 
                 <Link 
                     to="/registro"

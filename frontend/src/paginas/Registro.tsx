@@ -20,7 +20,9 @@ function Registro() {
 
     const { guardarToken } = useAuth()
 
-    async function manejarRegistro() {
+    async function manejarRegistro(evento: React.FormEvent) {
+        evento.preventDefault()
+
         setError(null)
         setIdError(null)
         setAviso("")
@@ -81,44 +83,46 @@ function Registro() {
             <div className="bg-superficie p-8 rounded-lg shadow w-full max-w-sm space-y-4">
                 <h1 className="text-2xl font-bold text-center">Registrarse</h1>
 
-                <input 
-                    className="w-full p-2 border border-borde rounded"
-                    type="text"
-                    value={nombre}
-                    onChange={evento => setNombre(evento.target.value)}
-                    placeholder="Tu nombre"/>
+                <form onSubmit={manejarRegistro} className="space-y-4">
+                    <input 
+                        className="w-full p-2 border border-borde rounded"
+                        type="text"
+                        value={nombre}
+                        onChange={evento => setNombre(evento.target.value)}
+                        placeholder="Tu nombre"/>
 
-                <input 
-                    className="w-full p-2 border border-borde rounded"
-                    type="text"
-                    value={apellidos}
-                    onChange={evento => setApellidos(evento.target.value)}
-                    placeholder="Tus apellidos"/>
+                    <input 
+                        className="w-full p-2 border border-borde rounded"
+                        type="text"
+                        value={apellidos}
+                        onChange={evento => setApellidos(evento.target.value)}
+                        placeholder="Tus apellidos"/>
 
-                <input 
-                    className="w-full p-2 border border-borde rounded"
-                    type="text"
-                    value={correo}
-                    onChange={evento => setCorreo(evento.target.value)}
-                    placeholder="usuario@example.com"/>
+                    <input 
+                        className="w-full p-2 border border-borde rounded"
+                        type="text"
+                        value={correo}
+                        onChange={evento => setCorreo(evento.target.value)}
+                        placeholder="usuario@example.com"/>
 
-                <input 
-                    className="w-full p-2 border border-borde rounded"
-                    type="password"
-                    value={contrasena}
-                    onChange={evento => setContrasena(evento.target.value)}
-                    placeholder="Contraseña"/>
+                    <input 
+                        className="w-full p-2 border border-borde rounded"
+                        type="password"
+                        value={contrasena}
+                        onChange={evento => setContrasena(evento.target.value)}
+                        placeholder="Contraseña"/>
 
-                {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
-                {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
-                {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
+                    {tardando && <Mensaje tipo="aviso" texto="El servidor está despertando, esto tarda unos segundos la primera vez" />}
+                    {aviso && <Mensaje tipo="aviso" texto={aviso}/>}
+                    {error && <Mensaje tipo="error" texto={error} idError={idError}/>}
 
-                <button 
-                    onClick={manejarRegistro}
-                    className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
-                    disabled={cargando}>
-                        {cargando ? "Registrando..." : "Registrarse"}
-                </button>
+                    <button 
+                        type="submit"
+                        className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro"
+                        disabled={cargando}>
+                            {cargando ? "Registrando..." : "Registrarse"}
+                    </button>
+                </form>
 
                 <Link 
                     to="/login"
