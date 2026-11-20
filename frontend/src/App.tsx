@@ -15,38 +15,39 @@ function App() {
   const [contador, setContador] = useState(0)
   const { token, removerToken } = useAuth()
 
+  const [menuAbierto, setMenuAbierto] = useState(false)
+
   function subirContador() {
     setContador((valorAnterior) => valorAnterior + 1)
   }
 
   return (
     <>
-    <nav className="bg-marino text-white p-4 flex items-center gap-4 justify-between">
-      <div className="flex items-center gap-6">
+    <nav className="bg-marino text-white p-4 flex flex-wrap items-center justify-between gap-4">
 
-        <Link to="/" className="font-bold text-lg">
+        <Link to="/" className="font-bold text-lg" onClick={() => setMenuAbierto(false)}>
           <span className="md:hidden">Rastreador</span>
           <span className="hidden md:inline">Rastreador de Postulaciones</span>
         </Link>
 
+      <div className={`${menuAbierto ? "flex" : "hidden"} md:flex w-full md:w-auto flex-col md:flex-row gap-4`}>
         {token && (
-          <Link to="/postulaciones" className="inline-flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-4.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
+          <Link to="/postulaciones" className="inline-flex items-center gap-1" onClick={() => setMenuAbierto(false)}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4.5">
+              <path strokeLinecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
             </svg>
             Mis postulaciones
           </Link>)}
 
         {token && (
-          <Link to="/postulaciones/nueva" className="inline-flex items-center gap-1">
+          <Link to="/postulaciones/nueva" className="inline-flex items-center gap-1" onClick={() => setMenuAbierto(false)}>
             <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4.5">
               <path strokeLinecap="round" strokeLinejoin="round"d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
             Nueva postulación
           </Link>)}
-      </div>
 
-      <div>
+      
         {token && (
           <button onClick={removerToken} className="inline-flex items-center gap-1">
             <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4.5">
@@ -56,6 +57,18 @@ function App() {
           </button>
         )}
       </div>
+
+      {/* Menu de 3 barras para pantallas de movil */}
+      <button
+        onClick={() => setMenuAbierto(!menuAbierto)}
+        className="md:hidden"
+        aria-label="menu"
+      >
+        <svg  fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4.5">
+          <path strokeLinecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+
     </nav>
 
     <main className="max-w-4xl mx-auto p-4">
