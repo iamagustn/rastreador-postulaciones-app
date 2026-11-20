@@ -216,27 +216,27 @@ function DetallePostulacion() {
                 <button onClick={manejarCambioEstado} disabled={cargandoCambio} className="bg-marino text-white p-2 rounded w-full hover:bg-marino-oscuro">
                     {cargandoCambio ? "Cambiando estado..." : "Cambiar estado"}
                 </button>
-
-                {modalAbierto && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-                        <div className="bg-superficie p-6 rounded-lg max-w-sm space-y-4">
-                             <p>¿Seguro que quieres eliminar esta postulación? No se puede deshacer esta acción</p>
-                                <div className="flex gap-3 justify-end">
-                                    <button onClick={() => setModalAbierto(false)} className="inline-flex items-center gap-2 px-4 py-2 rounded border border-marino text-marino hover:bg-marino hover:text-white transition">Cancelar</button>
-                                    <button 
-                                      type="button"
-                                      onClick={manejarBorrado} 
-                                      disabled={borrando}
-                                      className="inline-flex items-center gap-2 px-4 py-2 rounded border border-error text-error hover:bg-error hover:text-white transition disabled:opacity-50"
-                                    >
-                                      {borrando ? "Borrando postulación..." : "Borrar"}
-                                    </button>
-                                </div>
-                        </div>
-                    </div>
-                )}
-
             </div>
+
+            {modalAbierto && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="bg-superficie p-6 rounded-lg max-w-sm space-y-4">
+                         <p>¿Seguro que quieres eliminar esta postulación? No se puede deshacer esta acción</p>
+                            <div className="flex gap-3 justify-end">
+                                <button onClick={() => setModalAbierto(false)} className="inline-flex items-center gap-2 px-4 py-2 rounded border border-marino text-marino hover:bg-marino hover:text-white transition">Cancelar</button>
+                                <button 
+                                  type="button"
+                                  onClick={manejarBorrado} 
+                                  disabled={borrando}
+                                  className="inline-flex items-center gap-2 px-4 py-2 rounded border border-error text-error hover:bg-error hover:text-white transition disabled:opacity-50"
+                                >
+                                  {borrando ? "Borrando postulación..." : "Borrar"}
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
