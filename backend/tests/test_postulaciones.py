@@ -11,7 +11,7 @@ def test_crear_postulacion_tiene_fila_en_historial(cliente, token):
     historial = respuesta.json()
     assert len(historial) == 1
 
-def test_usuario_ajeno_no_puede_ver_editar_borrar_la_de_otro_responde_404(cliente, token):
+def test_usuario_ajeno_no_puede_ver_historial_editar_borrar_la_de_otro_responde_404(cliente, token):
     cabecera = {"Authorization": f"Bearer {token}"}
     # Crear la postulacion y extraer su id para usarlo en las pruebas
     postulacion = cliente.post("/postulaciones", headers=cabecera, json={
@@ -21,7 +21,6 @@ def test_usuario_ajeno_no_puede_ver_editar_borrar_la_de_otro_responde_404(client
     })
     id_postulacion = postulacion.json()["id"]
 
-    # Crear usuario y extraer sus datos para loguearnos con el
     cliente.post("/usuarios", json={
         "nombre": "usuario",
         "apellidos": "pruebas",
@@ -42,10 +41,12 @@ def test_usuario_ajeno_no_puede_ver_editar_borrar_la_de_otro_responde_404(client
         "puesto": "QA"
     })
     borrar_postulacion = cliente.delete(f"/postulaciones/{id_postulacion}", headers={"Authorization": f"Bearer {token_usuario}"})
+    traer_historial = cliente.get(f"/postulaciones/{id_postulacion}/historial", headers={"Authorization": f"Bearer {token_usuario}"})
 
     assert traer_postulacion.status_code == 404
     assert actualizar_postulaciones.status_code == 404
     assert borrar_postulacion.status_code == 404
+    assert traer_historial.status_code == 404
 
 def test_crear_empresa_con_caracteres_diferentes_es_una_misma_empresa(cliente, token):
     cabecera = {"Authorization": f"Bearer {token}"}
