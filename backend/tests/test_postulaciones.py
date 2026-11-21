@@ -95,3 +95,23 @@ def test_patch_estado_agrega_fila(cliente, token):
     historial_postulacion = cliente.get(f"/postulaciones/{id_postulacion}/historial", headers=cabecera)
     historial_json = historial_postulacion.json()
     assert len(historial_json) == 2
+
+def test_patch_de_un_solo_campo_deja_los_demas_intactos(cliente, token):
+    cabecera = {"Authorization": f"Bearer {token}"}
+
+    postulacion_creada = cliente.post("/postulaciones", headers=cabecera, json={
+        "puesto": "prueba",
+        "empresa": "NEXUS",
+        "fecha_postulacion": "2022-01-01"
+    })
+    postulacion_creada_json = postulacion_creada.json()
+
+    cliente.patch(f"/postulaciones/{postulacion_creada_json["id"]}", headers=cabecera, json={
+        "puesto": "prueba2",
+    })
+
+    postulacion_afectada = cliente.get(f"/postulaciones/{postulacion_creada_json["id"]}", headers=cabecera)
+    postulacion_afectada_json = postulacion_afectada.json()
+
+    assert postulacion_creada_json["empresa"] == postulacion_afectada_json["empresa"]
+    assert postulacion_creada_json["fecha_postulacion"] == postulacion_afectada_json["fecha_postulacion"]
