@@ -130,3 +130,18 @@ def test_patch_estado_inexistente_responde_422(cliente, token):
     })
 
     assert patch_postulacion.status_code == 422
+
+def test_patch_mercado_inexistente_responde_422(cliente, token):
+    cabecera = {"Authorization": f"Bearer {token}"}
+    postulacion_creada = cliente.post("/postulaciones", headers=cabecera, json={
+        "puesto": "prueba",
+        "empresa": "NEXUS",
+        "fecha_postulacion": "2022-01-01"
+    })
+    id_postulacion = postulacion_creada.json()["id"]
+
+    patch_postulacion = cliente.patch(f"/postulaciones/{id_postulacion}", headers=cabecera, json={
+        "mercado_id": 999,
+    })
+
+    assert patch_postulacion.status_code == 422
