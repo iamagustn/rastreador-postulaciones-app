@@ -89,12 +89,14 @@ def test_patch_estado_agrega_fila(cliente, token):
         "fecha_postulacion": "2022-01-01" 
     })
     id_postulacion = postulacion.json()["id"]
-    cliente.patch(f"/postulaciones/{id_postulacion}/estado", headers=cabecera, json={
+    patch = cliente.patch(f"/postulaciones/{id_postulacion}/estado", headers=cabecera, json={
         "estado": "rechazado"
     })
     
     historial_postulacion = cliente.get(f"/postulaciones/{id_postulacion}/historial", headers=cabecera)
     historial_json = historial_postulacion.json()
+
+    assert patch.status_code == 200
     assert len(historial_json) == 2
 
 def test_patch_de_un_solo_campo_deja_los_demas_intactos(cliente, token):
@@ -107,15 +109,17 @@ def test_patch_de_un_solo_campo_deja_los_demas_intactos(cliente, token):
     })
     postulacion_creada_json = postulacion_creada.json()
 
-    cliente.patch(f"/postulaciones/{postulacion_creada_json["id"]}", headers=cabecera, json={
+    patch = cliente.patch(f"/postulaciones/{postulacion_creada_json["id"]}", headers=cabecera, json={
         "puesto": "prueba2",
     })
 
     postulacion_afectada = cliente.get(f"/postulaciones/{postulacion_creada_json["id"]}", headers=cabecera)
     postulacion_afectada_json = postulacion_afectada.json()
 
+    assert patch.status_code == 200
     assert postulacion_creada_json["empresa"] == postulacion_afectada_json["empresa"]
     assert postulacion_creada_json["fecha_postulacion"] == postulacion_afectada_json["fecha_postulacion"]
+    assert postulacion_afectada_json["puesto"] == "prueba2"
 
 def test_patch_campo_desconocido_responde_422(cliente, token):
     cabecera = {"Authorization": f"Bearer {token}"}
