@@ -115,3 +115,18 @@ def test_patch_de_un_solo_campo_deja_los_demas_intactos(cliente, token):
 
     assert postulacion_creada_json["empresa"] == postulacion_afectada_json["empresa"]
     assert postulacion_creada_json["fecha_postulacion"] == postulacion_afectada_json["fecha_postulacion"]
+
+def test_patch_estado_inexistente_responde_422(cliente, token):
+    cabecera = {"Authorization": f"Bearer {token}"}
+    postulacion_creada = cliente.post("/postulaciones", headers=cabecera, json={
+        "puesto": "prueba",
+        "empresa": "NEXUS",
+        "fecha_postulacion": "2022-01-01"
+    })
+    id_postulacion = postulacion_creada.json()["id"]
+
+    patch_postulacion = cliente.patch(f"/postulaciones/{id_postulacion}", headers=cabecera, json={
+        "estado": "inexistente",
+    })
+
+    assert patch_postulacion.status_code == 422
