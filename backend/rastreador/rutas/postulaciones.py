@@ -112,6 +112,18 @@ def actualizar_parcial_postulacion(
     la_postulacion = session.scalars(consulta_postulacion).first()
     if la_postulacion is None:
         raise HTTPException(status_code=404, detail="No existe la postulación que buscas")
+    
+    mercado_id = postulacion.mercado_id
+    consulta_mercado = select(Mercado).where(Mercado.id == mercado_id)
+    el_mercado = session.scalars(consulta_mercado).first()
+    if el_mercado is None:
+        raise HTTPException(status_code=422, detail="Los datos proporcionados no son válidos para procesar la solicitud")
+
+    modalidad_id = postulacion.modalidad_id
+    consulta_modalidad = select(Modalidad).where(Modalidad.id == modalidad_id)
+    la_modalidad = session.scalars(consulta_modalidad).first()
+    if la_modalidad is None:
+        raise HTTPException(status_code=422, detail="Los datos proporcionados no son válidos para procesar la solicitud")
 
     datos = postulacion.model_dump(exclude_unset=True)
     if not datos:
