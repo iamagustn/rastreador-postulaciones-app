@@ -56,7 +56,7 @@ def test_crear_empresa_con_caracteres_diferentes_es_una_misma_empresa(cliente, t
         "empresa": "NEXUS",
         "fecha_postulacion": "2022-01-01"
     })
-    empresa_uno = postulacion_uno.json()["empresa"]
+    portal_uno = postulacion_uno.json()["empresa"]
     postulacion_dos = cliente.post("/postulaciones", headers=cabecera, json={
         "puesto": "prueba",
         "empresa": "nExUs",
@@ -64,7 +64,7 @@ def test_crear_empresa_con_caracteres_diferentes_es_una_misma_empresa(cliente, t
     })
     empresa_dos = postulacion_dos.json()["empresa"]
 
-    assert empresa_uno["id"] == empresa_dos["id"]
+    assert portal_uno["id"] == empresa_dos["id"]
 
 def test_borrar_postulacion_limpia_historial_404(cliente, token):
     cabecera = {"Authorization": f"Bearer {token}"}
@@ -160,3 +160,24 @@ def test_patch_modalidad_inexistente_responde_422(cliente, token):
     })
 
     assert patch_postulacion.status_code == 422
+
+def test_crear_portal_con_caracteres_diferentes_es_un_mismo_portal(cliente, token):
+    cabecera = {"Authorization": f"Bearer {token}"}
+
+    postulacion_uno = cliente.post("/postulaciones", headers=cabecera, json={
+        "puesto": "prueba",
+        "empresa": "nexus",
+        "portal": "Indeed",
+        "fecha_postulacion": "2022-01-01"
+    })
+    portal_uno = postulacion_uno.json()["portal"]
+
+    postulacion_dos = cliente.post("/postulaciones", headers=cabecera, json={
+        "puesto": "prueba",
+        "empresa": "nexus",
+        "portal": "indeed",
+        "fecha_postulacion": "2022-01-01"
+    })
+    portal_dos = postulacion_dos.json()["portal"]
+
+    assert portal_uno["id"] == portal_dos["id"]
